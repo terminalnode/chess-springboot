@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api")
 public class TestRestController {
-
   @GetMapping("/eclipse")
   public String getEclipse() {
     return "Friends don't let friends get Eclipse.";

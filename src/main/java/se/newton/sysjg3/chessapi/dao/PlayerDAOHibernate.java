@@ -27,7 +27,7 @@ public class PlayerDAOHibernate implements PlayerDAO {
   @Override
   public List<Player> getAll() {
     Session session = entityManager.unwrap(Session.class);
-    Query<Player> query = session.createQuery("from User", Player.class);
+    Query<Player> query = session.createQuery("from Player", Player.class);
     return query.getResultList();
   }
 }

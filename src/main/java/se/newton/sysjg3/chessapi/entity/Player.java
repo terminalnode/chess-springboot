@@ -1,5 +1,7 @@
 package se.newton.sysjg3.chessapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +15,7 @@ public class Player {
   @Column(name = "name")
   private String name;
 
+  @JsonIgnore
   @Column(name = "password")
   private String password;
 

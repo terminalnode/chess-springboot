@@ -4,16 +4,18 @@ public class PlayerErrorResponse {
   private int status;
   private String message;
   private long timeStamp;
+  private String internalName;
 
   //----- Constructors -----//
   public PlayerErrorResponse() {
     // empty no-arg constructor
   }
 
-  public PlayerErrorResponse(int status, String message, long timeStamp) {
+  public PlayerErrorResponse(int status, String message, long timeStamp, String internalName) {
     this.status = status;
     this.message = message;
     this.timeStamp = timeStamp;
+    this.internalName = internalName;
   }
 
   //----- Getters and setters -----//
@@ -39,5 +41,13 @@ public class PlayerErrorResponse {
 
   public long getTimeStamp() {
     return timeStamp;
+  }
+
+  public void setInternalName(String internalName) {
+    this.internalName = internalName;
+  }
+
+  public String getInternalName() {
+    return internalName;
   }
 }

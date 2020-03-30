@@ -31,11 +31,20 @@ public class PlayerRestController {
 
     // Validate input before creating user
     if (player.getName() == null && player.getPassword() == null) {
-      throw new PlayerCreateMissingFieldsException("Missing fields: username, password");
+      throw new PlayerCreateMissingFieldsException(
+          "Missing fields: name, password",
+          new String[]{ "name", "password" });
+
     } else if (player.getName() == null) {
-      throw new PlayerCreateMissingFieldsException("Missing field: username");
+      throw new PlayerCreateMissingFieldsException(
+          "Missing field: name",
+          new String[]{ "name" });
+
     } else if (player.getPassword() == null) {
-      throw new PlayerCreateMissingFieldsException("Missing field: password");
+      throw new PlayerCreateMissingFieldsException(
+          "Missing field: password",
+          new String[]{ "password" });
+
     } else if (!playerService.checkUsernameAvailability(player.getName())) {
       throw new PlayerCreateUsernameTaken(String.format("Username taken: %s", player.getName()));
     }

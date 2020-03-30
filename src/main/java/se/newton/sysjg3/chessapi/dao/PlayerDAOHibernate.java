@@ -30,4 +30,12 @@ public class PlayerDAOHibernate implements PlayerDAO {
     Query<Player> query = session.createQuery("from Player", Player.class);
     return query.getResultList();
   }
+
+  @Override
+  public Player getByName(String name) {
+    Session session = entityManager.unwrap(Session.class);
+    return session.byNaturalId(Player.class)
+        .using("name", name)
+        .load();
+  }
 }

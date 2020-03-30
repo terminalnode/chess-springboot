@@ -7,4 +7,5 @@ import java.util.List;
 public interface PlayerDAO {
   public void create(Player player);
   public List<Player> getAll();
+  public Player getByName(String name);
 }

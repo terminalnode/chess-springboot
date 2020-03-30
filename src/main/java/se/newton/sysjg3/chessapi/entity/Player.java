@@ -1,6 +1,6 @@
 package se.newton.sysjg3.chessapi.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
@@ -12,10 +12,10 @@ public class Player {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private int id;
 
-  @Column(name = "name")
+  @NaturalId
+  @Column(name = "name", unique = true)
   private String name;
 
-  @JsonIgnore
   @Column(name = "password")
   private String password;
 

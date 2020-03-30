@@ -28,19 +28,21 @@ public class PlayerRestController {
   public Player createUser(@RequestBody Player player) {
     // Setting ID to 0 is basically unsetting it
     player.setId(0);
+    boolean noName = (player.getName() == null || player.getName().isEmpty());
+    boolean noPassword = (player.getPassword() == null || player.getPassword().isEmpty());
 
     // Validate input before creating user
-    if (player.getName() == null && player.getPassword() == null) {
+    if (noName && noPassword) {
       throw new PlayerCreateMissingFieldsException(
           "Missing fields: name, password",
           new String[]{ "name", "password" });
 
-    } else if (player.getName() == null) {
+    } else if (noName) {
       throw new PlayerCreateMissingFieldsException(
           "Missing field: name",
           new String[]{ "name" });
 
-    } else if (player.getPassword() == null) {
+    } else if (noPassword) {
       throw new PlayerCreateMissingFieldsException(
           "Missing field: password",
           new String[]{ "password" });
@@ -50,6 +52,7 @@ public class PlayerRestController {
     }
 
     // Create and return the new player
+    player.setName(player.getName().toLowerCase());
     playerService.create(player);
     return player;
   }

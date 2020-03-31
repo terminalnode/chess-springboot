@@ -26,7 +26,15 @@ public class Player {
 
   @JsonIgnore
   @OneToMany(mappedBy = "player", fetch = FetchType.LAZY)
-  private List<Token> playerTokens = new ArrayList<>();
+  private List<Token> playerTokens;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "challenger", fetch = FetchType.LAZY)
+  private List<Challenge> sentChallenges;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "challenged", fetch = FetchType.LAZY)
+  private List<Challenge> pendingChallenges;
 
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinTable(
@@ -62,33 +70,17 @@ public class Player {
     playerTokens.add(token);
   }
 
-  //----- Getters and setters -----//
-  public int getId() {
-    return id;
-  }
-
+  //----- Setters -----//
   public void setId(int id) {
     this.id = id;
-  }
-
-  public String getName() {
-    return name;
   }
 
   public void setName(String name) {
     this.name = name;
   }
 
-  public String getPassword() {
-    return password;
-  }
-
   public void setPassword(String password) {
     this.password = password;
-  }
-
-  public List<Token> getPlayerTokens() {
-    return playerTokens;
   }
 
   public void setPlayerTokens(List<Token> playerTokens) {
@@ -99,7 +91,40 @@ public class Player {
     this.friends = friends;
   }
 
+  public void setSentChallenges(List<Challenge> sentChallenges) {
+    this.sentChallenges = sentChallenges;
+  }
+
+  public void setPendingChallenges(List<Challenge> pendingChallenges) {
+    this.pendingChallenges = pendingChallenges;
+  }
+
+  //----- Getters -----//
+  public int getId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public List<Token> getPlayerTokens() {
+    return playerTokens;
+  }
+
   public Set<Player> getFriends() {
     return friends;
+  }
+
+  public List<Challenge> getSentChallenges() {
+    return sentChallenges;
+  }
+
+  public List<Challenge> getPendingChallenges() {
+    return pendingChallenges;
   }
 }

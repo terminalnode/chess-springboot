@@ -11,21 +11,9 @@ import se.newton.sysjg3.chessapi.rest.exceptions.PlayerCreateMissingFieldsExcept
 import se.newton.sysjg3.chessapi.rest.exceptions.PlayerCreateUsernameTaken;
 
 @ControllerAdvice
-public class PlayerRestExceptionHandler {
+public class LoginRestExceptionHandler {
   @ExceptionHandler
-  public ResponseEntity<PlayerErrorResponse> handleException(PlayerCreateMissingFieldsException exc) {
-    PlayerErrorResponseWithList error = new PlayerErrorResponseWithList();
-    error.setStatus(HttpStatus.BAD_REQUEST.value());
-    error.setMessage(exc.getMessage());
-    error.setTimeStamp(System.currentTimeMillis());
-    error.setInternalName(exc.getInternalName());
-    error.setList(exc.getFields());
-
-    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-  }
-
-  @ExceptionHandler
-  public ResponseEntity<PlayerErrorResponse> handleException(PlayerCreateUsernameTaken exc) {
+  public ResponseEntity<PlayerErrorResponse> handleException(LoginFailedException exc) {
     PlayerErrorResponse error = new PlayerErrorResponse();
     error.setStatus(HttpStatus.BAD_REQUEST.value());
     error.setMessage(exc.getMessage());
@@ -34,4 +22,5 @@ public class PlayerRestExceptionHandler {
 
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
+
 }

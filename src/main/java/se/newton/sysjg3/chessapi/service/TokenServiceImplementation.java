@@ -2,7 +2,6 @@ package se.newton.sysjg3.chessapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import se.newton.sysjg3.chessapi.dao.PlayerDAO;
 import se.newton.sysjg3.chessapi.dao.TokenDAO;
 import se.newton.sysjg3.chessapi.entity.Player;
@@ -11,21 +10,21 @@ import se.newton.sysjg3.chessapi.rest.exceptions.LoginFailedToCreateTokenExcepti
 import se.newton.sysjg3.chessapi.rest.exceptions.LoginIncorrectPasswordException;
 import se.newton.sysjg3.chessapi.rest.exceptions.LoginNoSuchUserException;
 
-
 @Service
-public class LoginServiceImplementation implements LoginService {
+public class TokenServiceImplementation implements TokenService {
   private PlayerDAO playerDAO;
   private TokenDAO tokenDAO;
 
+  //----- Constructors -----//
   @Autowired
-  public LoginServiceImplementation(PlayerDAO playerDAO, TokenDAO tokenDAO) {
+  public TokenServiceImplementation(PlayerDAO playerDAO, TokenDAO tokenDAO) {
     this.playerDAO = playerDAO;
     this.tokenDAO = tokenDAO;
   }
 
+  //----- Implemented Methods -----//
   @Override
-  @Transactional
-  public Token loginPlayer(Player player) throws
+  public Token createTokenForPlayer(Player player) throws
       LoginFailedToCreateTokenException,
       LoginIncorrectPasswordException,
       LoginNoSuchUserException {
@@ -46,5 +45,30 @@ public class LoginServiceImplementation implements LoginService {
     }
 
     return token;
+  }
+
+  @Override
+  public Player getPlayerFromToken(Token token) {
+    return null;
+  }
+
+  @Override
+  public void extendToken(Token token) {
+
+  }
+
+  @Override
+  public boolean checkTokenExpiration(Token token) {
+    return false;
+  }
+
+  @Override
+  public Token getTokenFromTokenString(String tokenString) {
+    return null;
+  }
+
+  @Override
+  public Token getTokenFromTokenString(Token token) {
+    return null;
   }
 }

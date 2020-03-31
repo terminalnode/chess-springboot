@@ -7,20 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.entity.Token;
-import se.newton.sysjg3.chessapi.service.LoginService;
+import se.newton.sysjg3.chessapi.service.TokenService;
 
 @RestController
 @RequestMapping("/api")
 public class LoginRestController {
-  private LoginService loginService;
+  private TokenService tokenService;
 
   @Autowired
-  public LoginRestController(LoginService loginService) {
-    this.loginService = loginService;
+  public LoginRestController(TokenService tokenService) {
+    this.tokenService = tokenService;
   }
 
   @PostMapping("/login")
   public Token loginPlayer(@RequestBody Player player) {
-    return loginService.loginPlayer(player);
+    return tokenService.createTokenForPlayer(player);
   }
 }

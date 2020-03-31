@@ -1,5 +1,7 @@
 package se.newton.sysjg3.chessapi.entity;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,6 +15,7 @@ public class Token {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private int id;
 
+  @NaturalId
   @Column(name="tokenString")
   private String tokenString;
 
@@ -20,19 +23,27 @@ public class Token {
   @JoinColumn(name="player_id")
   private Player player;
 
+  @Column(name = "createdAt")
+  private long createdAt;
+
   //----- Constructors -----//
   public Token() {
     //No Arg-Constructor required by Hibernate
+    updateCreatedAt();
   }
 
   public Token(Player player) {
-
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     Date currentDate = new Date();
     String currentDateString = dateFormat.format(currentDate);
 
     this.tokenString = Integer.toString((player.getName() + currentDateString).hashCode());
+    updateCreatedAt();
+  }
 
+  //----- Methods -----//
+  public void updateCreatedAt() {
+    createdAt = System.currentTimeMillis();
   }
 
   //----- Getters and Setters -----//
@@ -58,5 +69,13 @@ public class Token {
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public long getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(long createdAt) {
+    this.createdAt = createdAt;
   }
 }

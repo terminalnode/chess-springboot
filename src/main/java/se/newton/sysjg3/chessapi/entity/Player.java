@@ -1,5 +1,6 @@
 package se.newton.sysjg3.chessapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class Player {
   @Column(name = "password")
   private String password;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "player")
   private List<Token> playerTokens = new ArrayList<>();
 

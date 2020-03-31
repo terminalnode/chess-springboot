@@ -18,7 +18,7 @@ public class Token {
     private String tokenString;
 
     @ManyToOne
-    @JoinColumn(name="id")
+    @JoinColumn(name="player_id")
     private Player player;
 
     //----- Constructors -----//

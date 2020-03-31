@@ -3,6 +3,7 @@ package se.newton.sysjg3.chessapi.entity;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "player")
@@ -18,6 +19,11 @@ public class Player {
 
   @Column(name = "password")
   private String password;
+
+  @OneToMany(mappedBy = "player")
+  private List<Token> playerTokens;
+
+
 
   //---- Constructors -----//
   public Player() {

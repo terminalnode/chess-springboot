@@ -1,4 +1,4 @@
-package se.newton.sysjg3.chessapi.rest;
+package se.newton.sysjg3.chessapi.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

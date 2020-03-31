@@ -47,12 +47,15 @@ public class PlayerRestController {
           "Missing field: password",
           new String[]{ "password" });
 
-    } else if (!playerService.checkUsernameAvailability(player.getName())) {
+    }
+
+    player.setName(player.getName().toLowerCase());
+    boolean userNameAvailable = playerService.checkUsernameAvailability(player.getName());
+    if (!userNameAvailable) {
       throw new PlayerCreateUsernameTaken(String.format("Username taken: %s", player.getName()));
     }
 
     // Create and return the new player
-    player.setName(player.getName().toLowerCase());
     playerService.create(player);
     return player;
   }

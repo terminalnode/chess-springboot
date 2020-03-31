@@ -5,7 +5,9 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "player")
@@ -23,9 +25,16 @@ public class Player {
   private String password;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "player")
+  @OneToMany(mappedBy = "player", fetch = FetchType.LAZY)
   private List<Token> playerTokens = new ArrayList<>();
 
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+      name = "friends",
+      joinColumns = @JoinColumn(name="player_id"),
+      inverseJoinColumns = @JoinColumn(name="friend_id")
+  )
+  private Set<Player> friends;
 
 
   //---- Constructors -----//
@@ -37,6 +46,14 @@ public class Player {
     this.name = name;
     this.password = password;
 }
+
+  //----- Methods -----///
+  public void addFriend(Player player) {
+    if (friends == null) {
+      friends = new HashSet<>();
+    }
+    friends.add(player);
+  }
 
   //----- Getters and setters -----//
   public int getId() {
@@ -69,5 +86,13 @@ public class Player {
 
   public void setPlayerTokens(List<Token> playerTokens) {
     this.playerTokens = playerTokens;
+  }
+
+  public void setFriends(Set<Player> friends) {
+    this.friends = friends;
+  }
+
+  public Set<Player> getFriends() {
+    return friends;
   }
 }

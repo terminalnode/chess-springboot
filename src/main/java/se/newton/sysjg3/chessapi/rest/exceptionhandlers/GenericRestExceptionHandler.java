@@ -16,6 +16,7 @@ public abstract class GenericRestExceptionHandler {
     error.setMessage(exc.getMessage());
     error.setTimeStamp(System.currentTimeMillis());
     error.setInternalName(exc.getInternalName());
+    error.setStatus(status.value());
     return new ResponseEntity<>(error, status);
   }
   protected ResponseEntity<GenericErrorResponseWithList> responseEntityGeneratorWithList(
@@ -26,6 +27,7 @@ public abstract class GenericRestExceptionHandler {
     error.setMessage(exc.getMessage());
     error.setTimeStamp(System.currentTimeMillis());
     error.setInternalName(exc.getInternalName());
+    error.setStatus(status.value());
     error.setList(exc.getFields());
     return new ResponseEntity<>(error, status);
   }

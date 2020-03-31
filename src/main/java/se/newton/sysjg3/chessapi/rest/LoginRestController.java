@@ -7,33 +7,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.entity.Token;
-import se.newton.sysjg3.chessapi.rest.exceptions.LoginFailedException;
 import se.newton.sysjg3.chessapi.service.LoginService;
-import se.newton.sysjg3.chessapi.service.PlayerService;
 
 @RestController
 @RequestMapping("/api")
 public class LoginRestController {
+  private LoginService loginService;
 
-    private LoginService loginService;
+  @Autowired
+  public LoginRestController(LoginService loginService) {
+    this.loginService = loginService;
+  }
 
-    @Autowired
-    public LoginRestController(LoginService loginService) {
-        this.loginService = loginService;
-    }
-
-
-    @PostMapping("/login")
-    public Token loginPlayer(@RequestBody Player player) {
-
-        Token token = loginService.loginPlayer(player);
-        if (token == null) {
-            throw new LoginFailedException("The passwords do not match!");
-        }
-
-        return token;
-    }
-
-
-
+  @PostMapping("/login")
+  public Token loginPlayer(@RequestBody Player player) {
+    return loginService.loginPlayer(player);
+  }
 }

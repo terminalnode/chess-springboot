@@ -9,6 +9,11 @@ import java.util.Date;
 @Table(name = "tokens")
 public class Token {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private int id;
+
     @Column(name="tokenString")
     private String tokenString;
 

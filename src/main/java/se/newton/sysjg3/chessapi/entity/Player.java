@@ -3,6 +3,7 @@ package se.newton.sysjg3.chessapi.entity;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ public class Player {
   private String password;
 
   @OneToMany(mappedBy = "player")
-  private List<Token> playerTokens;
+  private List<Token> playerTokens = new ArrayList<>();
 
 
 
@@ -33,7 +34,7 @@ public class Player {
   public Player(String name, String password) {
     this.name = name;
     this.password = password;
-  }
+}
 
   //----- Getters and setters -----//
   public int getId() {
@@ -58,5 +59,13 @@ public class Player {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public List<Token> getPlayerTokens() {
+    return playerTokens;
+  }
+
+  public void setPlayerTokens(List<Token> playerTokens) {
+    this.playerTokens = playerTokens;
   }
 }

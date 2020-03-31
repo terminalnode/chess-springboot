@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import se.newton.sysjg3.chessapi.rest.errorresponses.PlayerErrorResponse;
 import se.newton.sysjg3.chessapi.rest.errorresponses.PlayerErrorResponseWithList;
+import se.newton.sysjg3.chessapi.rest.exceptions.LoginFailedException;
 import se.newton.sysjg3.chessapi.rest.exceptions.PlayerCreateMissingFieldsException;
 import se.newton.sysjg3.chessapi.rest.exceptions.PlayerCreateUsernameTaken;
 
@@ -33,4 +34,15 @@ public class PlayerRestExceptionHandler {
 
     return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
   }
+
+  @ExceptionHandler
+  public ResponseEntity<PlayerErrorResponse> handleException(LoginFailedException exc) {
+    PlayerErrorResponse error = new PlayerErrorResponse();
+    error.setStatus(HttpStatus.BAD_REQUEST.value());
+    error.setMessage(exc.getMessage());
+    error.setTimeStamp(System.currentTimeMillis());
+
+    return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+  }
+
 }

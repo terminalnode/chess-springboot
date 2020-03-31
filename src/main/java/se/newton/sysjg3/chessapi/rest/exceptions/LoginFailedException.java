@@ -1,0 +1,10 @@
+package se.newton.sysjg3.chessapi.rest.exceptions;
+
+public class LoginFailedException extends RuntimeException {
+
+    public LoginFailedException(String message) {
+        super(message);
+    }
+
+
+}

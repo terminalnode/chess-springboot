@@ -35,7 +35,6 @@ public class Token {
 
         this.tokenString = Integer.toString((player.getName() + currentDateString).hashCode());
 
-        this.player = player;
     }
 
     //----- Getters and Setters -----//
@@ -54,5 +53,13 @@ public class Token {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

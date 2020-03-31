@@ -25,7 +25,7 @@ public class Player {
   private String password;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "player", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<Token> playerTokens;
 
   @JsonIgnore
@@ -68,6 +68,7 @@ public class Player {
       playerTokens = new ArrayList<>();
     }
     playerTokens.add(token);
+    token.setPlayer(this);
   }
 
   //----- Setters -----//

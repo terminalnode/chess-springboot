@@ -1,19 +1,25 @@
 package se.newton.sysjg3.chessapi.entity;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "challenges")
+@Table(
+    name = "challenges",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"challenger_id", "challenged_id"}))
 public class Challenge {
   @Id
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private long id;
 
+  @NaturalId
   @ManyToOne
   @JoinColumn(name = "challenger_id")
   private Player challenger;
 
+  @NaturalId
   @ManyToOne
   @JoinColumn(name = "challenged_id")
   private Player challenged;

@@ -39,6 +39,7 @@ public class Player {
   @OneToMany(mappedBy = "challenged", fetch = FetchType.LAZY)
   private List<Challenge> pendingChallenges;
 
+  @JsonIgnore
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinTable(
       name = "friends",

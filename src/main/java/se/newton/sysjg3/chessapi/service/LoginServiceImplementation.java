@@ -13,26 +13,24 @@ import se.newton.sysjg3.chessapi.rest.exceptions.LoginFailedException;
 @Service
 public class LoginServiceImplementation implements LoginService {
 
-    private PlayerDAO playerDAO;
-    private TokenDAO tokenDAO;
+  private PlayerDAO playerDAO;
+  private TokenDAO tokenDAO;
 
-    @Autowired
-    public LoginServiceImplementation(PlayerDAO playerDAO, TokenDAO tokenDAO) {
-        this.playerDAO = playerDAO;
-        this.tokenDAO = tokenDAO;
+  @Autowired
+  public LoginServiceImplementation(PlayerDAO playerDAO, TokenDAO tokenDAO) {
+    this.playerDAO = playerDAO;
+    this.tokenDAO = tokenDAO;
+  }
+
+  @Override
+  @Transactional
+  public Token loginPlayer(Player player) {
+    boolean passwordVerified = playerDAO.verifyPassword(player.getName(), player.getPassword());
+
+    if (passwordVerified) {
+      return tokenDAO.createTokenForPlayer(player);
+    } else {
+      return null;
     }
-
-    @Override
-    @Transactional
-    public Token loginPlayer(Player player) {
-
-        boolean passwordVerified;
-
-        passwordVerified = playerDAO.verifyPassword(player.getName(), player.getPassword());
-        if (passwordVerified) return tokenDAO.createTokenForPlayer(player);
-        else return null;
-
-    }
-
-
+  }
 }

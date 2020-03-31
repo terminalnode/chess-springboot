@@ -25,7 +25,10 @@ public class Player {
   private String password;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "player", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToMany(
+      mappedBy = "player",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL)
   private List<Token> playerTokens;
 
   @JsonIgnore

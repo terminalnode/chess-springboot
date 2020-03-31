@@ -8,58 +8,55 @@ import java.util.Date;
 @Entity
 @Table(name = "tokens")
 public class Token {
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private int id;
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private int id;
+  @Column(name="tokenString")
+  private String tokenString;
 
-    @Column(name="tokenString")
-    private String tokenString;
+  @ManyToOne(cascade={ CascadeType.REFRESH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH })
+  @JoinColumn(name="player_id")
+  private Player player;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="player_id")
-    private Player player;
-
-    //----- Constructors -----//
-
+  //----- Constructors -----//
+  public Token() {
     //No Arg-Constructor required by Hibernate
-    public Token() {}
+  }
 
+  public Token(Player player) {
 
-    public Token(Player player) {
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    Date currentDate = new Date();
+    String currentDateString = dateFormat.format(currentDate);
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date currentDate = new Date();
-        String currentDateString = dateFormat.format(currentDate);
+    this.tokenString = Integer.toString((player.getName() + currentDateString).hashCode());
 
-        this.tokenString = Integer.toString((player.getName() + currentDateString).hashCode());
+  }
 
-    }
+  //----- Getters and Setters -----//
+  public String getTokenString() {
+    return tokenString;
+  }
 
-    //----- Getters and Setters -----//
+  public void setTokenString(String tokenString) {
+    this.tokenString = tokenString;
+  }
 
-    public String getTokenString() {
-        return tokenString;
-    }
+  public Player getPlayer() {
+    return player;
+  }
 
-    public void setTokenString(String tokenString) {
-        this.tokenString = tokenString;
-    }
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
 
-    public Player getPlayer() {
-        return player;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 }

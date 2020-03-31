@@ -11,41 +11,33 @@ import javax.transaction.Transactional;
 
 @Repository
 public class TokenDAOHibernate implements TokenDAO {
-    private EntityManager entityManager;
+  private EntityManager entityManager;
 
-    @Autowired
-    public TokenDAOHibernate(EntityManager entityManager) {
-        this.entityManager = entityManager;
+  @Autowired
+  public TokenDAOHibernate(EntityManager entityManager) {
+    this.entityManager = entityManager;
+  }
+
+  @Override
+  @Transactional
+  public Token createTokenForPlayer(Player player) {
+    Session session = entityManager.unwrap(Session.class);
+
+    // Check if player is a managed entity, and if not try to replace it
+    // with one that is. If the ID wasn't provided or invalid, this won't work.
+    if (!entityManager.contains(player) && player.getId() != 0) {
+      player = session.get(Player.class, player.getId());
+      if (player == null) {
+        return null;
+      }
     }
 
-    @Transactional
-    @Override
-    public Token createTokenForPlayer(Player player) {
-        Session session = entityManager.unwrap(Session.class);
+    // Create token and add it to player
+    Token token = new Token(player);
+    token.setId(0);
+    player.addToken(token);
+    session.save(token);
 
-        if (player == null) {
-            System.out.println(">>>PLAYER IS NULL");
-        }
-        else {
-            System.out.println("PLAYER IS: " + player.getName());
-        }
-
-        Token token = new Token(player);
-        if (token == null) {
-            System.out.println(">>>TOKEN IS NULL");
-        }
-        else {
-            System.out.println("TOKEN IS: " + token.getTokenString());
-        }
-
-        token.setId(0);
-        player.addToken(token);
-        session.save(token);
-
-
-        return token;
-    }
-
-
-
+    return token;
+  }
 }

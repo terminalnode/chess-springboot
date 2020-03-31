@@ -55,6 +55,13 @@ public class Player {
     friends.add(player);
   }
 
+  public void addToken(Token token) {
+    if (playerTokens == null) {
+      playerTokens = new ArrayList<>();
+    }
+    playerTokens.add(token);
+  }
+
   //----- Getters and setters -----//
   public int getId() {
     return id;

@@ -38,4 +38,15 @@ public class PlayerDAOHibernate implements PlayerDAO {
         .using("name", name)
         .load();
   }
+
+  @Override
+  public Boolean verifyPassword(String name, String password) {
+    Session session = entityManager.unwrap(Session.class);
+    Player player = session.byNaturalId(Player.class)
+            .using("name", name)
+            .load();
+
+    return player.getPassword().equals(password);
+  }
+
 }

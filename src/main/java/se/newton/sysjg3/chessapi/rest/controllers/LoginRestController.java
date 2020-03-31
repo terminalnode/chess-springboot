@@ -23,4 +23,9 @@ public class LoginRestController {
   public Token loginPlayer(@RequestBody Player player) {
     return tokenService.createTokenForPlayer(player);
   }
+
+  @PostMapping("/logout")
+  public void logoutPlayer(@RequestBody Token token) {
+    tokenService.destroyToken(token);
+  }
 }

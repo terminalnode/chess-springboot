@@ -10,4 +10,5 @@ public interface TokenService {
   public boolean checkTokenExpiration(Token token);
   public Token getTokenFromTokenString(String tokenString);
   public Token getTokenFromTokenString(Token token);
+  public void destroyToken(Token token);
 }

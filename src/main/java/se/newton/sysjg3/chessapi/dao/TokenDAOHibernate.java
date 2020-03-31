@@ -125,4 +125,16 @@ public class TokenDAOHibernate implements TokenDAO {
         .using("tokenString", tokenString)
         .load();
   }
+
+  @Override
+  @Transactional
+  public void destroyToken(Token token) {
+    token = getTokenFromTokenString(token);
+
+    System.out.println(token);
+    if (token != null) {
+      Session session = entityManager.unwrap(Session.class);
+      session.delete(token);
+    }
+  }
 }

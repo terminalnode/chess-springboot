@@ -1,5 +1,6 @@
 package se.newton.sysjg3.chessapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -23,13 +24,13 @@ public class Token {
   @JoinColumn(name="player_id")
   private Player player;
 
+  @JsonIgnore
   @Column(name = "createdAt")
   private long createdAt;
 
   //----- Constructors -----//
   public Token() {
     //No Arg-Constructor required by Hibernate
-    updateCreatedAt();
   }
 
   public Token(Player player) {

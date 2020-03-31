@@ -48,4 +48,10 @@ public interface TokenDAO {
      * @return The full version of the token.
      */
     public Token getTokenFromTokenString(Token token);
+
+    /**
+     * Destroy an active token, removing it from the database.
+     * @param token The token to be destroyed.
+     */
+    public void destroyToken(Token token);
 }

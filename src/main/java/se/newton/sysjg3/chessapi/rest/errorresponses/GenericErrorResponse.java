@@ -1,17 +1,17 @@
 package se.newton.sysjg3.chessapi.rest.errorresponses;
 
-public class PlayerErrorResponse {
+public class GenericErrorResponse {
   private int status;
   private String message;
   private long timeStamp;
   private String internalName;
 
   //----- Constructors -----//
-  public PlayerErrorResponse() {
+  public GenericErrorResponse() {
     // empty no-arg constructor
   }
 
-  public PlayerErrorResponse(int status, String message, long timeStamp, String internalName) {
+  public GenericErrorResponse(int status, String message, long timeStamp, String internalName) {
     this.status = status;
     this.message = message;
     this.timeStamp = timeStamp;

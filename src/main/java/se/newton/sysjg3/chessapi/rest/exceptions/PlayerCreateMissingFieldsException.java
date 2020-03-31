@@ -1,14 +1,7 @@
 package se.newton.sysjg3.chessapi.rest.exceptions;
 
-public class PlayerCreateMissingFieldsException extends AndroidChessException {
-  private String[] fields;
-
+public class PlayerCreateMissingFieldsException extends AndroidChessExceptionWithList {
   public PlayerCreateMissingFieldsException(String message, String[] fields) {
-    super(message, "PlayerCreateMissingFieldsException");
-    this.fields = fields;
-  }
-
-  public String[] getFields() {
-    return fields;
+    super(message, "PlayerCreateMissingFieldsException", fields);
   }
 }

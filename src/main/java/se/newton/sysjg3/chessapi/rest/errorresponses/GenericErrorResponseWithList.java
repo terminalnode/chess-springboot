@@ -1,14 +1,14 @@
 package se.newton.sysjg3.chessapi.rest.errorresponses;
 
-public class PlayerErrorResponseWithList extends PlayerErrorResponse {
+public class GenericErrorResponseWithList extends GenericErrorResponse {
   private String[] list;
 
   //----- Constructors -----//
-  public PlayerErrorResponseWithList() {
+  public GenericErrorResponseWithList() {
     // empty no-arg constructor
   }
 
-  public PlayerErrorResponseWithList(int status, String message, long timeStamp, String internalName, String[] list) {
+  public GenericErrorResponseWithList(int status, String message, long timeStamp, String internalName, String[] list) {
     super(status, message, timeStamp, internalName);
     this.list = list;
   }

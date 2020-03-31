@@ -17,7 +17,7 @@ public class Token {
     @Column(name="tokenString")
     private String tokenString;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="player_id")
     private Player player;
 

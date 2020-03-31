@@ -28,7 +28,7 @@ public class Player {
   @OneToMany(mappedBy = "player", fetch = FetchType.LAZY)
   private List<Token> playerTokens = new ArrayList<>();
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinTable(
       name = "friends",
       joinColumns = @JoinColumn(name="player_id"),

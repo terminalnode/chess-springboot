@@ -1,5 +1,7 @@
 package se.newton.sysjg3.chessapi.entity.chesspieces;
 
+import se.newton.sysjg3.chessapi.entity.Game;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -27,6 +29,10 @@ public abstract class Piece {
 
   @Column(name = "moved")
   protected boolean moved;
+
+  @ManyToOne
+  @JoinColumn(name = "game_id")
+  private Game game;
 
 
   //----- Constructors -----//
@@ -76,6 +82,10 @@ public abstract class Piece {
     this.moved = moved;
   }
 
+  public void setGame(Game game) {
+    this.game = game;
+  }
+
   //----- Getters -----//
   public long getId() {
     return id;
@@ -99,5 +109,9 @@ public abstract class Piece {
 
   public boolean isMoved() {
     return moved;
+  }
+
+  public Game getGame() {
+    return game;
   }
 }

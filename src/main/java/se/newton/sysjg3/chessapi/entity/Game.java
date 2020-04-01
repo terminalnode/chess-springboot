@@ -28,8 +28,14 @@ public class Game {
   @Column(name = "turns_taken")
   private int turnsTaken;
 
-  //@Column(name = "pieces")
-  //private List<Piece> pieces;
+  @OneToMany
+  @Column(name = "pieces")
+  @JoinTable(
+      name = "piece",
+      joinColumns = @JoinColumn(name="game_id"),
+      inverseJoinColumns = @JoinColumn(name="piece_id")
+  )
+  private List<Piece> pieces;
 
   @Column(name = "finished")
   private boolean finished;
@@ -109,9 +115,9 @@ public class Game {
     this.turnsTaken = turnsTaken;
   }
 
-  //public void setPieces(List<Piece> pieces) {
-  //  this.pieces = pieces;
-  //}
+  public void setPieces(List<Piece> pieces) {
+    this.pieces = pieces;
+  }
 
   public void setFinished(boolean finished) {
     this.finished = finished;
@@ -138,9 +144,9 @@ public class Game {
     return turnsTaken;
   }
 
-  //public List<Piece> getPieces() {
-  //  return pieces;
-  //}
+  public List<Piece> getPieces() {
+    return pieces;
+  }
 
   public boolean isFinished() {
     return finished;

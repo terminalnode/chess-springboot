@@ -20,9 +20,7 @@ public class GameDAOHibernate implements GameDAO {
 
     @Override
     public Game create(Game game) {
-        if (game == null) {
-            System.out.println("Game is null!");
-        }
+
             Session session = entityManager.unwrap(Session.class);
             session.save(game);
             return game;

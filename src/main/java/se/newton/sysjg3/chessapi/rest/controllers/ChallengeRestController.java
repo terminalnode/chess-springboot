@@ -53,5 +53,18 @@ public class ChallengeRestController {
             return challengeService.acceptChallenge(challengeId, tokenString);
 
     }
+
+    //----- Delete Mappings -----//
+
+    @DeleteMapping("/challenges/{challengeId}")
+    public String declineChallenge(@PathVariable("challengeId") int challengeId,
+                                @RequestHeader(value ="Token") String tokenString) {
+      
+        return challengeService.declineChallenge(challengeId, tokenString);
+
+    }
+
+
+
 }
 

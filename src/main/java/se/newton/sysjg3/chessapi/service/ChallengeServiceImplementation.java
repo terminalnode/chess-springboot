@@ -95,4 +95,23 @@ public class ChallengeServiceImplementation implements ChallengeService {
 
   }
 
+  @Override
+  @Transactional
+  public String declineChallenge(long challengeId, String tokenString) {
+  Challenge challenge = challengeDAO.getChallengeById(challengeId);
+  Player challenged = tokenDAO.getPlayerFromTokenString(tokenString);
+  if (challenge == null) {
+    System.out.println("CHALLENGE IS NULL");
+  }
+    if (challenged == null) {
+      System.out.println("CHALLENGED IS NULL");
+    }
+
+    if (challenged.equals(challenge.getChallenged())) {
+      challengeDAO.delete(challenge);
+      return "Challenge declined.";
+    }
+    else throw new ChallengeIdMismatchException("Error: Challenge ID does not match token ID", "ChallengeIdMismatchException");
+  }
+
 }

@@ -11,4 +11,5 @@ public interface ChallengeService {
   public List<Challenge> getChallengesByChallenger(Player challenger);
   public List<Challenge> getChallengesByChallenged(Player challenged);
   public Game acceptChallenge(long challengeId, String tokenString);
+  public String declineChallenge(long challengeId, String tokenString);
 }

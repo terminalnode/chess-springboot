@@ -4,12 +4,15 @@ import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.entity.Token;
 
 public interface TokenService {
-  public Token createTokenForPlayer(Player player);
-  public Player getPlayerFromToken(Token token);
-  public void extendToken(Token token);
-  public boolean checkTokenExpiration(Token token);
-  public Token getTokenFromTokenString(String tokenString);
-  public Token getTokenFromTokenString(Token token);
-  public void destroyToken(Token token);
-  public void destroyToken(String tokenString);
+  public Token createTokenForPlayer(Player player) throws RuntimeException;
+  public Player getPlayerFromToken(Token token) throws RuntimeException;
+  public Player getPlayerFromToken(String token) throws RuntimeException;
+  public void extendToken(Token token) throws RuntimeException;
+  public void checkTokenExpiration(Token token) throws RuntimeException;
+  public void checkTokenAndExtend(Token token) throws RuntimeException;
+  public void checkTokenAndExtend(String token) throws RuntimeException;
+  public Token getTokenFromTokenString(String tokenString) throws RuntimeException;
+  public Token getTokenFromTokenString(Token token) throws RuntimeException;
+  public void destroyToken(Token token) throws RuntimeException;
+  public void destroyToken(String tokenString) throws RuntimeException;
 }

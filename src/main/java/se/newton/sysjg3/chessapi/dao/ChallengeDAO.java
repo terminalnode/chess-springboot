@@ -9,6 +9,7 @@ public interface ChallengeDAO {
   public void create(Challenge challenge);
   public void delete(Challenge challenge);
   public Challenge getChallengeByParticipants(Player challenger, Player challenged);
+  public Challenge getChallengeById(long challengeId);
   public List<Challenge> getChallengesByChallenger(Player challenger);
   public List<Challenge> getChallengesByChallenged(Player challenged);
 

@@ -37,11 +37,23 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
   @Override
   public Challenge getChallengeByParticipants(Player challenger, Player challenged) {
     Session session = entityManager.unwrap(Session.class);
+    try {
     return session.byNaturalId(Challenge.class)
         .using("challenger", challenger)
         .using("challenged", challenged)
         .load();
+    }
+    catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
   }
+
+    @Override
+    public Challenge getChallengeById(long challengeId) {
+        Session session = entityManager.unwrap(Session.class);
+        return (Challenge) session.getReference(Challenge.class, challengeId);
+    }
 
 
   @Override
@@ -61,6 +73,8 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
     return query.getResultList();
 
   }
+
+
 
 
 

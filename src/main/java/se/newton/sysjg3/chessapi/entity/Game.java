@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "chessboard")
+@Table(name = "game")
 public class Game {
   @Id
   @Column(name = "id")
@@ -54,6 +54,7 @@ public class Game {
     this.blackPlayer = blackPlayer;
     whitesTurn = true;
     turnsTaken = 0;
+    generatePieces();
   }
 
   //----- Methods -----//

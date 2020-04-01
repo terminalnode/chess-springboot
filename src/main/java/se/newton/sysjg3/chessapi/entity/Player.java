@@ -157,9 +157,16 @@ public class Player {
     return gamesAsWhite;
   }
 
+  @JsonIgnore
   public List<Game> getGames() {
-    List<Game> games = getGamesAsBlack();
-    games.addAll(getGamesAsWhite());
-    return games;
+    List<Game> gamesAsBlack = getGamesAsBlack();
+    List<Game> gamesAsWhite = getGamesAsWhite();
+    if (gamesAsWhite == null) {
+      return gamesAsBlack;
+    } else if (gamesAsBlack == null) {
+      return gamesAsWhite;
+    }
+    gamesAsBlack.addAll(gamesAsWhite);
+    return gamesAsBlack;
   }
 }

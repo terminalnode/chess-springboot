@@ -74,6 +74,7 @@ public class TokenDAOHibernate implements TokenDAO {
   }
 
   @Override
+  @Transactional
   public Token extendToken(Token token) {
     token = ManagedEntityHelper.getManaged(token, entityManager);
     if (token == null) {

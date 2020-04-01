@@ -1,10 +1,32 @@
 package se.newton.sysjg3.chessapi.entity.chesspieces;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Inheritance
+@DiscriminatorColumn(name = "piece_type")
+@Table(name = "piece")
 public abstract class Piece {
-  protected int id, x, y;
-  protected boolean isWhite, moved;
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private long id;
+
+  @Column(name = "internal_id")
+  protected int internalId;
+
+  @Column(name = "x_pos")
+  protected int x;
+
+  @Column(name = "y_pos")
+  protected int y;
+
+  @Column(name = "is_white")
+  protected boolean isWhite;
+
+  @Column(name = "moved")
+  protected boolean moved;
 
 
   //----- Constructors -----//
@@ -12,8 +34,8 @@ public abstract class Piece {
     // Empty no-arg constructor
   }
 
-  public Piece(int id, int x, int y, boolean isWhite) {
-    this.id = id;
+  public Piece(int internalId, int x, int y, boolean isWhite) {
+    this.internalId = internalId;
     this.x = x;
     this.y = y;
     this.isWhite = isWhite;
@@ -30,8 +52,12 @@ public abstract class Piece {
   }
 
   //----- Setters -----//
-  public void setId(int id) {
+  public void setId(long id) {
     this.id = id;
+  }
+
+  public void setInternalId(int internalId) {
+    this.internalId = internalId;
   }
 
   public void setX(int x) {
@@ -51,8 +77,12 @@ public abstract class Piece {
   }
 
   //----- Getters -----//
-  public int getId() {
+  public long getId() {
     return id;
+  }
+
+  public int getInternalId() {
+    return internalId;
   }
 
   public int getX() {

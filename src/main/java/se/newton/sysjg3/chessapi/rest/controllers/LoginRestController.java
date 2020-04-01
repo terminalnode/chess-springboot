@@ -6,6 +6,8 @@ import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.entity.Token;
 import se.newton.sysjg3.chessapi.service.TokenService;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api")
 public class LoginRestController {
@@ -22,7 +24,10 @@ public class LoginRestController {
   }
 
   @PostMapping("/logout")
-  public void logoutPlayer(@RequestHeader Token token) {
-    tokenService.destroyToken(token);
+  public void logoutPlayer(@RequestHeader Map<String, String> tokenMap) {
+
+    String tokenString = tokenMap.get("tokenString");
+
+    tokenService.destroyToken(tokenString);
   }
 }

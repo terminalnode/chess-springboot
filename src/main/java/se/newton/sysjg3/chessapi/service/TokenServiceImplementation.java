@@ -73,7 +73,14 @@ public class TokenServiceImplementation implements TokenService {
   }
 
   @Override
-  public void destroyToken(Token token) {
+public void destroyToken(Token token) {
+  tokenDAO.destroyToken(token);
+}
+
+@Override
+public void destroyToken(String tokenString) {
+
+    Token token = tokenDAO.getTokenFromTokenString(tokenString);
     tokenDAO.destroyToken(token);
   }
 }

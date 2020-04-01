@@ -11,4 +11,5 @@ public interface TokenService {
   public Token getTokenFromTokenString(String tokenString);
   public Token getTokenFromTokenString(Token token);
   public void destroyToken(Token token);
+  public void destroyToken(String tokenString);
 }

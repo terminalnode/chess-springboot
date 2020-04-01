@@ -28,7 +28,7 @@ public class Game {
   @Column(name = "turns_taken")
   private int turnsTaken;
 
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   @Column(name = "pieces")
   @JoinTable(
       name = "piece",

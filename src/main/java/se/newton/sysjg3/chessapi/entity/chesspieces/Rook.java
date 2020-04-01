@@ -7,6 +7,10 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("rook")
 public class Rook extends Piece {
+  public Rook() {
+    // Default no-arg constructor
+  }
+
   public Rook(int id, int x, int y, boolean isWhite) {
     super(id, x, y, isWhite);
   }

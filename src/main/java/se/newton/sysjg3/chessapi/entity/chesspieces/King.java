@@ -7,6 +7,10 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("king")
 public class King extends Piece {
+  public King() {
+    // Default no-arg constructor
+  }
+
   public King(int id, int x, int y, boolean isWhite) {
     super(id, x, y, isWhite);
   }

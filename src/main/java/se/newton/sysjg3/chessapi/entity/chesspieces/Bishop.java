@@ -7,6 +7,10 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("bishop")
 public class Bishop extends Piece {
+  public Bishop() {
+    // Default no-arg constructor
+  }
+
   public Bishop(int id, int x, int y, boolean isWhite) {
     super(id, x, y, isWhite);
   }

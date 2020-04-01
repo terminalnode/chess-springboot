@@ -7,6 +7,10 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("pawn")
 public class Pawn extends Piece {
+  public Pawn() {
+    // Default no-arg constructor
+  }
+
   public Pawn(int id, int x, int y, boolean isWhite) {
     super(id, x, y, isWhite);
   }

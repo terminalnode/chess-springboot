@@ -52,6 +52,17 @@ public class TokenDAOHibernate implements TokenDAO {
   }
 
   @Override
+  public Player getPlayerFromTokenString(String tokenString) {
+    Token token = getTokenFromTokenString(tokenString);
+    token = ManagedEntityHelper.getManaged(token, entityManager);
+    if (token == null) {
+      return null;
+    }
+
+    return token.getPlayer();
+  }
+
+  @Override
   public boolean checkTokenExpiration(Token token) {
     token = ManagedEntityHelper.getManaged(token, entityManager);
     if (token == null) {

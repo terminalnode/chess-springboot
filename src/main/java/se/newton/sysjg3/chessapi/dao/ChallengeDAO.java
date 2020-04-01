@@ -10,6 +10,6 @@ public interface ChallengeDAO {
   public void delete(Challenge challenge);
   public Challenge getChallengeByParticipants(Player challenger, Player challenged);
   public List<Challenge> getChallengesByChallenger(Player challenger);
-  public List<Challenge> getChallengesByChallenged(Player challenger);
+  public List<Challenge> getChallengesByChallenged(Player challenged);
 
 }

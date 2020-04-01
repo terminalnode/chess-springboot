@@ -43,6 +43,8 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
         .load();
   }
 
+
+  @Override
   public List<Challenge> getChallengesByChallenger(Player challenger) {
     Session session = entityManager.unwrap(Session.class);
     Query<Challenge> query = session.createQuery("from Challenges where Challenges.challenger_id= :challenger_id", Challenge.class);
@@ -50,14 +52,17 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
     return query.getResultList();
 
   }
+
+  @Override
   public List<Challenge> getChallengesByChallenged(Player challenged){
     Session session = entityManager.unwrap(Session.class);
     Query<Challenge> query = session.createQuery("from Challenges where Challenges.challenged_id = :challenged_id", Challenge.class);
     query.setParameter("challenged_id", challenged.getId());
     return query.getResultList();
 
-
   }
+
+
 
 
 }

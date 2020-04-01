@@ -1,10 +1,12 @@
 package se.newton.sysjg3.chessapi.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.newton.sysjg3.chessapi.dao.ChallengeDAO;
 import se.newton.sysjg3.chessapi.entity.Challenge;
 import se.newton.sysjg3.chessapi.entity.Player;
+import se.newton.sysjg3.chessapi.entity.Token;
 
 import java.util.List;
 

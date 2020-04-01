@@ -50,7 +50,7 @@ public class Player {
   @JsonIgnore
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinTable(
-      name = "friends",
+      name = "friend",
       joinColumns = @JoinColumn(name="player_id"),
       inverseJoinColumns = @JoinColumn(name="friend_id")
   )

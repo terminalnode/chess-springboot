@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "tokens")
+@Table(name = "token")
 public class Token {
   @Id
   @Column(name = "id")

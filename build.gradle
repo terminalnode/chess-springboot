@@ -14,8 +14,6 @@ repositories {
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-  // Disable spring security until we know how to use it lol
-  // implementation 'org.springframework.boot:spring-boot-starter-security'
   implementation 'org.springframework.boot:spring-boot-starter-web'
   runtimeOnly 'org.postgresql:postgresql'
   testImplementation('org.springframework.boot:spring-boot-starter-test') {

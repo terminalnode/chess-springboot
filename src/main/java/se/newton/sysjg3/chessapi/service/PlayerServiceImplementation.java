@@ -27,4 +27,15 @@ public class PlayerServiceImplementation implements PlayerService {
   public List<Player> getAll() {
     return playerDAO.getAll();
   }
+
+  @Override
+  public Player getByName(String name) {
+    return playerDAO.getByName(name);
+  }
+
+  @Override
+  public boolean checkUsernameAvailability(String name) {
+    Player player = playerDAO.getByName(name);
+    return player == null;
+  }
 }

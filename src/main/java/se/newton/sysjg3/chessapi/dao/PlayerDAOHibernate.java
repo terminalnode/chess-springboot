@@ -30,4 +30,26 @@ public class PlayerDAOHibernate implements PlayerDAO {
     Query<Player> query = session.createQuery("from Player", Player.class);
     return query.getResultList();
   }
+
+  @Override
+  public Player getByName(String name) {
+    Session session = entityManager.unwrap(Session.class);
+    return session.byNaturalId(Player.class)
+        .using("name", name)
+        .load();
+  }
+
+  @Override
+  public Boolean verifyPassword(String name, String password) {
+
+    Player player = getByName(name);
+
+    if (player == null) {
+      System.out.println(">>> COULD NOT FIND PLAYER IN DATABASE");
+      return false;
+    }
+
+    return player.getPassword().equals(password);
+  }
+
 }

@@ -5,7 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.newton.sysjg3.chessapi.dao.PlayerDAO;
 import se.newton.sysjg3.chessapi.entity.Player;
+import se.newton.sysjg3.chessapi.rest.exceptions.AddFriendException;
+import se.newton.sysjg3.chessapi.rest.exceptions.AlreadyFriendException;
 import se.newton.sysjg3.chessapi.rest.exceptions.AndroidChessException;
+import se.newton.sysjg3.chessapi.rest.exceptions.CantAddSelfAsFriendException;
 
 import java.util.List;
 import java.util.Set;
@@ -55,6 +58,31 @@ public class PlayerServiceImplementation implements PlayerService {
     tokenService.checkTokenAndExtend(token);
     Player player = tokenService.getPlayerFromToken(token);
     Player actualFriend = playerDAO.get(newFriend);
-    return playerDAO.addFriend(player, actualFriend);
+
+    if (player == null) {
+      throw new AddFriendException("I don't know who you are.");
+    }
+
+    if (player.getFriends().contains(actualFriend)) {
+      throw new AlreadyFriendException(
+          String.format(
+              "You and %s are already buddies.",
+              actualFriend.getName())
+      );
+    }
+
+    if (actualFriend == null) {
+      throw new AddFriendException("I don't know who you're friend is.");
+    }
+
+    if (player.equals(actualFriend)) {
+      throw new CantAddSelfAsFriendException("You can't add yourself as a friend.");
+    } else {
+      Player result = playerDAO.addFriend(player, actualFriend);
+      if (result == null) {
+        throw new AddFriendException("Failed to add friend.");
+      }
+      return result;
+    }
   }
 }

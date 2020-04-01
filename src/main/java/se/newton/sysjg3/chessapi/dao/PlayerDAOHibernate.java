@@ -23,6 +23,7 @@ public class PlayerDAOHibernate implements PlayerDAO {
 
   //----- Interface Methods -----//
   @Override
+  @Transactional
   public Player create(Player player) {
     Session session = entityManager.unwrap(Session.class);
     session.save(player);
@@ -65,7 +66,7 @@ public class PlayerDAOHibernate implements PlayerDAO {
     if (actualPlayer == null) {
       return getByName(player.getName());
     } else {
-      return player;
+      return actualPlayer;
     }
   }
 
@@ -82,10 +83,14 @@ public class PlayerDAOHibernate implements PlayerDAO {
   @Override
   @Transactional
   public Player addFriend(Player player, Player newFriend) {
-    Player actualPlayer = get(newFriend);
+    Player actualPlayer = get(player);
     Player actualFriend = get(newFriend);
+
     if (actualPlayer != null && actualFriend != null) {
+      Session session = entityManager.unwrap(Session.class);
       actualPlayer.addFriend(actualFriend);
+      session.save(actualPlayer);
+
       return actualFriend;
     }
     return null;

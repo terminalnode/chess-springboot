@@ -15,7 +15,7 @@ public class Player {
   @Id
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private int id;
+  private long id;
 
   @NaturalId
   @Column(name = "name", unique = true)
@@ -48,7 +48,7 @@ public class Player {
   private List<Game> gamesAsWhite;
 
   @JsonIgnore
-  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
       name = "friend",
       joinColumns = @JoinColumn(name="player_id"),
@@ -83,8 +83,17 @@ public class Player {
     token.setPlayer(this);
   }
 
+  @Override
+  public String toString() {
+    return String.format(
+        "<Player id=%s, name=%s>",
+        id,
+        name
+    );
+  }
+
   //----- Setters -----//
-  public void setId(int id) {
+  public void setId(long id) {
     this.id = id;
   }
 
@@ -121,7 +130,7 @@ public class Player {
   }
 
   //----- Getters -----//
-  public int getId() {
+  public long getId() {
     return id;
   }
 

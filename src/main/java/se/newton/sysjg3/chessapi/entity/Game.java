@@ -2,23 +2,43 @@ package se.newton.sysjg3.chessapi.entity;
 
 import se.newton.sysjg3.chessapi.entity.chesspieces.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "chessboard")
 public class Game {
-  private Player whitePlayer;
-  private Player blackPlayer;
-  private boolean whitesTurn;
-  private int turnsTaken;
-  private List<Piece> pieces;
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private long id;
 
+  @ManyToOne
+  @JoinColumn(name = "white_player")
+  private Player whitePlayer;
+
+  @ManyToOne
+  @JoinColumn(name = "black_player")
+  private Player blackPlayer;
+
+  @Column(name = "whites_turn")
+  private boolean whitesTurn;
+
+  @Column(name = "turns_taken")
+  private int turnsTaken;
+
+  //@Column(name = "pieces")
+  //private List<Piece> pieces;
+
+  @Column(name = "finished")
+  private boolean finished;
+
+  //----- Static fields -----//
   private static boolean WHITE = true;
   private static boolean BLACK = false;
 
+  //----- Constructors -----//
   public Game() {
     // Empty no-args constructor required by Hibernate.
   }
@@ -30,9 +50,10 @@ public class Game {
     turnsTaken = 0;
   }
 
+  //----- Methods -----//
   private List<Piece> generatePieces() {
     List<Piece> list = new ArrayList<>();
-    int id = 0;
+    int id = 1;
 
     // Add pawns
     for (int x = 0; x < 8; x++) {
@@ -65,5 +86,63 @@ public class Game {
     list.add(new Queen(++id, 3, 7, BLACK));
 
     return list;
+  }
+
+  //----- Setters -----//
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public void setWhitePlayer(Player whitePlayer) {
+    this.whitePlayer = whitePlayer;
+  }
+
+  public void setBlackPlayer(Player blackPlayer) {
+    this.blackPlayer = blackPlayer;
+  }
+
+  public void setWhitesTurn(boolean whitesTurn) {
+    this.whitesTurn = whitesTurn;
+  }
+
+  public void setTurnsTaken(int turnsTaken) {
+    this.turnsTaken = turnsTaken;
+  }
+
+  //public void setPieces(List<Piece> pieces) {
+  //  this.pieces = pieces;
+  //}
+
+  public void setFinished(boolean finished) {
+    this.finished = finished;
+  }
+
+  //----- Getters -----//
+  public long getId() {
+    return id;
+  }
+
+  public Player getWhitePlayer() {
+    return whitePlayer;
+  }
+
+  public Player getBlackPlayer() {
+    return blackPlayer;
+  }
+
+  public boolean isWhitesTurn() {
+    return whitesTurn;
+  }
+
+  public int getTurnsTaken() {
+    return turnsTaken;
+  }
+
+  //public List<Piece> getPieces() {
+  //  return pieces;
+  //}
+
+  public boolean isFinished() {
+    return finished;
   }
 }

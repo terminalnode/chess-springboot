@@ -40,6 +40,14 @@ public class Player {
   private List<Challenge> pendingChallenges;
 
   @JsonIgnore
+  @OneToMany(mappedBy = "blackPlayer", fetch = FetchType.LAZY)
+  private List<Game> gamesAsBlack;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "whitePlayer", fetch = FetchType.LAZY)
+  private List<Game> gamesAsWhite;
+
+  @JsonIgnore
   @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinTable(
       name = "friends",
@@ -104,6 +112,14 @@ public class Player {
     this.pendingChallenges = pendingChallenges;
   }
 
+  public void setGamesAsBlack(List<Game> gamesAsBlack) {
+    this.gamesAsBlack = gamesAsBlack;
+  }
+
+  public void setGamesAsWhite(List<Game> gamesAsWhite) {
+    this.gamesAsWhite = gamesAsWhite;
+  }
+
   //----- Getters -----//
   public int getId() {
     return id;
@@ -131,5 +147,19 @@ public class Player {
 
   public List<Challenge> getPendingChallenges() {
     return pendingChallenges;
+  }
+
+  public List<Game> getGamesAsBlack() {
+    return gamesAsBlack;
+  }
+
+  public List<Game> getGamesAsWhite() {
+    return gamesAsWhite;
+  }
+
+  public List<Game> getGames() {
+    List<Game> games = getGamesAsBlack();
+    games.addAll(getGamesAsWhite());
+    return games;
   }
 }

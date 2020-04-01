@@ -8,20 +8,24 @@ import se.newton.sysjg3.chessapi.entity.Player;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class PlayerDAOHibernate implements PlayerDAO {
   private EntityManager entityManager;
 
+  //----- Constructors -----//
   @Autowired
   public PlayerDAOHibernate(EntityManager entityManager) {
     this.entityManager = entityManager;
   }
 
+  //----- Interface Methods -----//
   @Override
-  public void create(Player player) {
+  public Player create(Player player) {
     Session session = entityManager.unwrap(Session.class);
     session.save(player);
+    return player;
   }
 
   @Override
@@ -40,16 +44,8 @@ public class PlayerDAOHibernate implements PlayerDAO {
   }
 
   @Override
-  public Boolean verifyPassword(String name, String password) {
-
-    Player player = getByName(name);
-
-    if (player == null) {
-      System.out.println(">>> COULD NOT FIND PLAYER IN DATABASE");
-      return false;
-    }
-
-    return player.getPassword().equals(password);
+  public Set<Player> getFriends(Player player) {
+    player = ManagedEntityHelper.getManaged(player, entityManager);
+    return player.getFriends();
   }
-
 }

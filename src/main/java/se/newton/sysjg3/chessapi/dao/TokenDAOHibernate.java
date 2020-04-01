@@ -22,47 +22,11 @@ public class TokenDAOHibernate implements TokenDAO {
     this.entityManager = entityManager;
   }
 
-  //----- Helper Methods -----//
-
-  /**
-   * Checks if a Token is managed by the EntityManager, and if it's
-   * not tries to replace it with a version that is.
-   * @param token The token to be checked.
-   * @return Null or a managed version of the token.
-   */
-  public Token getManagedToken(Token token) {
-    if (token == null || token.getId() == 0) {
-      return null;
-    } else if (entityManager.contains(token)) {
-      return token;
-    }
-
-    token = entityManager.find(Token.class, token.getId());
-    return token;
-  }
-
-  /**
-   * Checks if a Player is managed by the EntityManager, and if it's
-   * not tries to replace it with a version that is.
-   * @param player The player to be checked.
-   * @return Null or a managed version of the token.
-   */
-  public Player getManagedPlayer(Player player) {
-    if (player == null || player.getId() == 0) {
-      return null;
-    } else if (entityManager.contains(player)) {
-      return player;
-    }
-
-    player = entityManager.find(Player.class, player.getId());
-    return player;
-  }
-
   //----- Implemented Methods -----//
   @Override
   @Transactional
   public Token createTokenForPlayer(Player player) {
-    player = getManagedPlayer(player);
+    player = ManagedEntityHelper.getManaged(player, entityManager);
     if (player == null) {
       return null;
     }
@@ -79,7 +43,7 @@ public class TokenDAOHibernate implements TokenDAO {
 
   @Override
   public Player getPlayerFromToken(Token token) {
-    token = getManagedToken(token);
+    token = ManagedEntityHelper.getManaged(token, entityManager);
     if (token == null) {
       return null;
     }
@@ -89,7 +53,7 @@ public class TokenDAOHibernate implements TokenDAO {
 
   @Override
   public boolean checkTokenExpiration(Token token) {
-    token = getManagedToken(token);
+    token = ManagedEntityHelper.getManaged(token, entityManager);
     if (token == null) {
       return false;
     }
@@ -100,7 +64,7 @@ public class TokenDAOHibernate implements TokenDAO {
 
   @Override
   public Token extendToken(Token token) {
-    token = getManagedToken(token);
+    token = ManagedEntityHelper.getManaged(token, entityManager);
     if (token == null) {
       return null;
     }

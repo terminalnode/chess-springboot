@@ -35,8 +35,8 @@ public class ChallengeServiceImplementation implements ChallengeService {
 
   @Override
   @Transactional
-  public Challenge create(Player challenged, String tokenString) {
-    Player challenger = tokenService.getPlayerFromToken(tokenString);
+  public Challenge create(Player challenged, String token) {
+    Player challenger = tokenService.getPlayerFromToken(token);
     challenged = playerService.getManagedPlayer(challenged);
     long currentTime = System.currentTimeMillis();
 
@@ -67,22 +67,25 @@ public class ChallengeServiceImplementation implements ChallengeService {
   }
 
   @Override
-  public List<Challenge> getChallengesByChallenger(String tokenString) {
-    Player challenger = tokenService.getPlayerFromToken(tokenString);
+  public List<Challenge> getChallengesByChallenger(String token) {
+    tokenService.checkTokenAndExtend(token);
+    Player challenger = tokenService.getPlayerFromToken(token);
     return challengeDAO.getChallengesByChallenger(challenger);
   }
 
   @Override
-  public List<Challenge> getChallengesByChallenged(String tokenString) {
-    Player challenged = tokenService.getPlayerFromToken(tokenString);
+  public List<Challenge> getChallengesByChallenged(String token) {
+    tokenService.checkTokenAndExtend(token);
+    Player challenged = tokenService.getPlayerFromToken(token);
     return challengeDAO.getChallengesByChallenged(challenged);
   }
 
   @Override
   @Transactional
-  public Game acceptChallenge(long challengeId, String tokenString) throws RuntimeException {
+  public Game acceptChallenge(long challengeId, String token) throws RuntimeException {
+    tokenService.checkTokenAndExtend(token);
     Challenge challenge = challengeDAO.getChallengeById(challengeId);
-    Player challenged = tokenService.getPlayerFromToken(tokenString);
+    Player challenged = tokenService.getPlayerFromToken(token);
 
     if (challenged.equals(challenge.getChallenged())) {
         challengeDAO.delete(challenge);
@@ -95,9 +98,10 @@ public class ChallengeServiceImplementation implements ChallengeService {
 
   @Override
   @Transactional
-  public String declineChallenge(long challengeId, String tokenString) {
+  public String declineChallenge(long challengeId, String token) {
+    tokenService.checkTokenAndExtend(token);
     Challenge challenge = challengeDAO.getChallengeById(challengeId);
-    Player challenged = tokenService.getPlayerFromToken(tokenString);
+    Player challenged = tokenService.getPlayerFromToken(token);
 
     if (challenge == null) {
       System.out.println("CHALLENGE IS NULL");

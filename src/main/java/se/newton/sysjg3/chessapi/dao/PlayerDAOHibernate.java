@@ -1,5 +1,6 @@
 package se.newton.sysjg3.chessapi.dao;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,9 @@ import org.springframework.stereotype.Repository;
 import se.newton.sysjg3.chessapi.entity.Player;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
@@ -94,5 +98,21 @@ public class PlayerDAOHibernate implements PlayerDAO {
       return actualFriend;
     }
     return null;
+  }
+
+  @Override
+  public List<Player> searchPlayersByString(String searchString) {
+
+    String searchPatternString = "%" + searchString + "%";
+
+    Session session = entityManager.unwrap(Session.class);
+    CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+    CriteriaQuery<Player> playerCriteriaQuery = criteriaBuilder.createQuery(Player.class);
+
+    Root<Player> root = playerCriteriaQuery.from(Player.class);
+    playerCriteriaQuery.select(root).where(criteriaBuilder.like(root.get("name"), searchPatternString));
+
+    Query<Player> query = session.createQuery(playerCriteriaQuery);
+    return query.getResultList();
   }
 }

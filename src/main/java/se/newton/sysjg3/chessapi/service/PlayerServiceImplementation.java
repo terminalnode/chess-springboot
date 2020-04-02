@@ -85,4 +85,24 @@ public class PlayerServiceImplementation implements PlayerService {
       return result;
     }
   }
+
+  @Override
+  public List<Player> searchFriendByString(String searchString, String tokenString) {
+
+    Player searchingPlayer = tokenService.getPlayerFromToken(tokenString);
+
+    Set<Player> searchingPlayersFriends = searchingPlayer.getFriends();
+
+    List<Player> potentialNewFriends = playerDAO.searchPlayersByString(searchString);
+
+    for (Player oldFriend : searchingPlayersFriends) {
+      if (potentialNewFriends.contains(oldFriend)) {
+        potentialNewFriends.remove(oldFriend);
+      }
+    }
+    if (potentialNewFriends.contains(searchingPlayer)) {
+        potentialNewFriends.remove(searchingPlayer);
+    }
+    return potentialNewFriends;
+  }
 }

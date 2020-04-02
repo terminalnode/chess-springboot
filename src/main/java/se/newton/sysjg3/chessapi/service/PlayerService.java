@@ -12,4 +12,5 @@ public interface PlayerService {
   public boolean checkUsernameAvailability(String name) throws RuntimeException;
   public Set<Player> getFriends(String token) throws RuntimeException;
   public Player addFriend(String token, Player newFriend) throws RuntimeException;
+  public List<Player> searchFriendByString(String searchString, String tokenString);
 }

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.service.PlayerService;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -22,8 +23,19 @@ public class FriendRestController {
     return playerService.getFriends(token);
   }
 
+  @GetMapping("/friends/search/{searchString}")
+  public List<Player> searchFriendsByString(@RequestHeader(value="Token") String tokenString, @PathVariable String searchString) {
+    return playerService.searchFriendByString(searchString, tokenString);
+  }
+
   @PostMapping("/friends")
   public Player addFriend(@RequestHeader("Token") String token, @RequestBody Player newFriend) {
     return playerService.addFriend(token, newFriend);
   }
+
+
+
+
+
+
 }

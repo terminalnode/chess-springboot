@@ -14,4 +14,5 @@ public interface PlayerDAO {
   public Player get(Player player);
   public Set<Player> getFriends(Player player);
   public Player addFriend(Player player, Player newFriend);
+  public List<Player> searchPlayersByString(String searchString);
 }

@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface ChallengeService {
   public Challenge create(Player challenged, String tokenString);
-  public List<Challenge> getChallengesByChallenger(Player challenger);
-  public List<Challenge> getChallengesByChallenged(Player challenged);
+  public List<Challenge> getChallengesByChallenger(String tokenString);
+  public List<Challenge> getChallengesByChallenged(String tokenString);
   public Game acceptChallenge(long challengeId, String tokenString);
   public String declineChallenge(long challengeId, String tokenString);
 }

@@ -105,4 +105,9 @@ public class PlayerServiceImplementation implements PlayerService {
     }
     return potentialNewFriends;
   }
+
+  @Override
+  public Player getManagedPlayer(Player player) {
+    return playerDAO.get(player);
+  }
 }

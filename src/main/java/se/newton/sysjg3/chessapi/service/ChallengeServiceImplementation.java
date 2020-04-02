@@ -17,21 +17,21 @@ import java.util.List;
 @Service
 public class ChallengeServiceImplementation implements ChallengeService {
   private ChallengeDAO challengeDAO;
-  private TokenDAO tokenDAO;
+  private TokenService tokenService;
   private PlayerService playerServide;
   private GameService gameService;
 
   private long expirationTime;
 
   @Autowired
-  public ChallengeServiceImplementation(ChallengeDAO challengeDAO, PlayerService playerService, GameService gameService, TokenDAO tokenDAO) {
+  public ChallengeServiceImplementation(ChallengeDAO challengeDAO, PlayerService playerService, GameService gameService, TokenService tokenService) {
     this.challengeDAO = challengeDAO;
     this.expirationTime = 24 * 3600 * 1000;
 
     this.gameService = gameService;
     this.playerServide = playerService;
 
-    this.tokenDAO = tokenDAO;
+    this.tokenService = tokenService;
 
   }
 
@@ -40,7 +40,8 @@ public class ChallengeServiceImplementation implements ChallengeService {
   public Challenge create(Player challenged, String tokenString) {
 
 
-    Player challenger = tokenDAO.getPlayerFromTokenString(tokenString);
+    Player challenger = tokenService.getPlayerFromToken(tokenString);
+    challenged = playerServide.getManagedPlayer(challenged);
     long currentTime = System.currentTimeMillis();
 
     Challenge challenge = new Challenge(challenger, challenged);
@@ -66,17 +67,18 @@ public class ChallengeServiceImplementation implements ChallengeService {
   }
 
   @Override
-  public List<Challenge> getChallengesByChallenger(Player challenger) {
+  public List<Challenge> getChallengesByChallenger(String tokenString) {
+
+    Player challenger = tokenService.getPlayerFromToken(tokenString);
 
     return challengeDAO.getChallengesByChallenger(challenger);
 
   }
 
   @Override
-  public List<Challenge> getChallengesByChallenged(Player challenged) {
+  public List<Challenge> getChallengesByChallenged(String tokenString) {
 
-
-
+    Player challenged = tokenService.getPlayerFromToken(tokenString);
     return challengeDAO.getChallengesByChallenged(challenged);
 
   }
@@ -85,7 +87,7 @@ public class ChallengeServiceImplementation implements ChallengeService {
   @Transactional
   public Game acceptChallenge(long challengeId, String tokenString) throws RuntimeException {
     Challenge challenge = challengeDAO.getChallengeById(challengeId);
-    Player challenged = tokenDAO.getPlayerFromTokenString(tokenString);
+    Player challenged = tokenService.getPlayerFromToken(tokenString);
 
     if (challenged.equals(challenge.getChallenged())) {
         challengeDAO.delete(challenge);
@@ -99,7 +101,7 @@ public class ChallengeServiceImplementation implements ChallengeService {
   @Transactional
   public String declineChallenge(long challengeId, String tokenString) {
   Challenge challenge = challengeDAO.getChallengeById(challengeId);
-  Player challenged = tokenDAO.getPlayerFromTokenString(tokenString);
+  Player challenged = tokenService.getPlayerFromToken(tokenString);
   if (challenge == null) {
     System.out.println("CHALLENGE IS NULL");
   }

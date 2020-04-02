@@ -26,13 +26,13 @@ public class ChallengeRestController {
     //----- Get Mappings -----//
 
     @GetMapping("/challenges/challenger")
-    public List<Challenge> getChallengesbyChallenger(@RequestBody Player player) {
-        return challengeService.getChallengesByChallenger(player);
+    public List<Challenge> getChallengesbyChallenger(@RequestHeader(value="Token") String tokenString) {
+        return challengeService.getChallengesByChallenger(tokenString);
     }
 
     @GetMapping("/challenges/challenged")
-    public List<Challenge> getChallengesbyChallenged(@RequestBody Player player) {
-        return challengeService.getChallengesByChallenged(player);
+    public List<Challenge> getChallengesbyChallenged(@RequestHeader(value="Token") String tokenString) {
+        return challengeService.getChallengesByChallenged(tokenString);
     }
 
 
@@ -42,7 +42,7 @@ public class ChallengeRestController {
     @PostMapping("/challenges")
     public Challenge createNewChallenge(@RequestHeader(value="Token") String tokenString,
                                         @RequestBody Player challenged) {
-        System.out.println("The Test starts here!");
+
         return challengeService.create(challenged, tokenString);
     }
 

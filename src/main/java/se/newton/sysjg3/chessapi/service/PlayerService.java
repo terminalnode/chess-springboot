@@ -13,4 +13,5 @@ public interface PlayerService {
   public Set<Player> getFriends(String token) throws RuntimeException;
   public Player addFriend(String token, Player newFriend) throws RuntimeException;
   public List<Player> searchFriendByString(String searchString, String tokenString);
+  public Player getManagedPlayer(Player player);
 }

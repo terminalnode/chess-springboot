@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import se.newton.sysjg3.chessapi.rest.errorresponses.GenericErrorResponse;
 
+import javax.annotation.Priority;
+
 @ControllerAdvice
+@Priority(10_000)
 public class RuntimeExceptionExceptionHandler {
   @ExceptionHandler
   public ResponseEntity<GenericErrorResponse> handleException(RuntimeException exc) {

@@ -18,7 +18,7 @@ import java.util.List;
 public class ChallengeServiceImplementation implements ChallengeService {
   private ChallengeDAO challengeDAO;
   private TokenService tokenService;
-  private PlayerService playerServide;
+  private PlayerService playerService;
   private GameService gameService;
 
   private long expirationTime;
@@ -29,7 +29,7 @@ public class ChallengeServiceImplementation implements ChallengeService {
     this.expirationTime = 24 * 3600 * 1000;
 
     this.gameService = gameService;
-    this.playerServide = playerService;
+    this.playerService = playerService;
 
     this.tokenService = tokenService;
 
@@ -41,7 +41,7 @@ public class ChallengeServiceImplementation implements ChallengeService {
 
 
     Player challenger = tokenService.getPlayerFromToken(tokenString);
-    challenged = playerServide.getManagedPlayer(challenged);
+    challenged = playerService.getManagedPlayer(challenged);
     long currentTime = System.currentTimeMillis();
 
     Challenge challenge = new Challenge(challenger, challenged);
@@ -93,7 +93,7 @@ public class ChallengeServiceImplementation implements ChallengeService {
         challengeDAO.delete(challenge);
         return gameService.createNewGame(challenge);
     }
-    else throw new ChallengeIdMismatchException("Error: Challenge ID does not match token ID", "ChallengeIdMismatchException");
+    else throw new ChallengeIdMismatchException("Error: Challenge ID does not match token ID");
 
   }
 
@@ -113,7 +113,7 @@ public class ChallengeServiceImplementation implements ChallengeService {
       challengeDAO.delete(challenge);
       return "Challenge declined.";
     }
-    else throw new ChallengeIdMismatchException("Error: Challenge ID does not match token ID", "ChallengeIdMismatchException");
+    else throw new ChallengeIdMismatchException("Error: Challenge ID does not match token ID");
   }
 
 }

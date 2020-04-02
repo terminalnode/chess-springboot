@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import se.newton.sysjg3.chessapi.dao.GameDAO;
 import se.newton.sysjg3.chessapi.entity.Challenge;
 import se.newton.sysjg3.chessapi.entity.Game;
+import se.newton.sysjg3.chessapi.entity.Player;
+import se.newton.sysjg3.chessapi.helpers.ChessMove;
+import se.newton.sysjg3.chessapi.rest.exceptions.IllegalMoveException;
 
 import javax.transaction.Transactional;
 
@@ -13,9 +16,13 @@ public class GameServiceImplementation implements GameService {
 
     private GameDAO gameDAO;
 
+    private TokenService tokenService;
+
     @Autowired
-    public GameServiceImplementation(GameDAO gameDAO) {
+    public GameServiceImplementation(GameDAO gameDAO, TokenService tokenService) {
         this.gameDAO = gameDAO;
+
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -33,8 +40,21 @@ public class GameServiceImplementation implements GameService {
         gameDAO.create(game);
 
         return game;
-
     }
+
+    @Transactional
+    public Game makeMove(ChessMove move, Game game, String tokenString) {
+
+        Player movingPlayer = tokenService.getPlayerFromToken(tokenString);
+        if (movingPlayer != game.getCurrentPlayer()) {
+            throw new IllegalMoveException("It is not you turn!");
+        }
+        if (game.validateMove(move)) {
+            gameDAO.makeMove(move, game);
+        }
+        return game;
+    }
+
 
 
 

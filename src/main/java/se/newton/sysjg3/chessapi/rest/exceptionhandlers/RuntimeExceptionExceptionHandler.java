@@ -13,6 +13,8 @@ import javax.annotation.Priority;
 public class RuntimeExceptionExceptionHandler {
   @ExceptionHandler
   public ResponseEntity<GenericErrorResponse> handleException(RuntimeException exc) {
+    exc.printStackTrace();
+
     GenericErrorResponse error = new GenericErrorResponse();
     error.setMessage("Unknown error");
     error.setTimeStamp(System.currentTimeMillis());

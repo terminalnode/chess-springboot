@@ -1,6 +1,7 @@
 package se.newton.sysjg3.chessapi.dao;
 
 import se.newton.sysjg3.chessapi.entity.Challenge;
+import se.newton.sysjg3.chessapi.entity.Game;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.entity.Token;
 
@@ -60,5 +61,21 @@ public class ManagedEntityHelper {
 
     token = entityManager.find(Token.class, token.getId());
     return token;
+  }
+
+  /**
+   * Get managed Token from Token.
+   * @param game The token to be checked.
+   * @return A managed version of the Token entity, or null.
+   */
+  public static Game getManaged(Game game, EntityManager entityManager) {
+    if (game == null || game.getId() == 0) {
+      return null;
+    } else if (entityManager.contains(game)) {
+      return game;
+    }
+
+    game = entityManager.find(Game.class, game.getId());
+    return game;
   }
 }

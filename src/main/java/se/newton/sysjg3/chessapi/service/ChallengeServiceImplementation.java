@@ -9,6 +9,7 @@ import se.newton.sysjg3.chessapi.entity.Challenge;
 import se.newton.sysjg3.chessapi.entity.Game;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.entity.Token;
+import se.newton.sysjg3.chessapi.rest.exceptions.ChallengeAlreadyExistsException;
 import se.newton.sysjg3.chessapi.rest.exceptions.ChallengeIdMismatchException;
 
 import javax.transaction.Transactional;
@@ -59,7 +60,12 @@ public class ChallengeServiceImplementation implements ChallengeService {
 
     } else {
       // Challenge already exists, no new one will be created.
-      challenge = null;
+      throw new ChallengeAlreadyExistsException(
+          String.format(
+              "%s already has a challenge against %s",
+              challenger.getName(),
+              challenged.getName())
+      );
     }
     System.out.println("Challenge: " + challenge.getChallenger().getName() + " vs " + challenge.getChallenged().getName() + " created");
     return challenge;

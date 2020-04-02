@@ -1,6 +1,5 @@
 package se.newton.sysjg3.chessapi.rest.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.newton.sysjg3.chessapi.entity.Challenge;
@@ -8,13 +7,11 @@ import se.newton.sysjg3.chessapi.entity.Game;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.service.ChallengeService;
 
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 public class ChallengeRestController {
-
     private ChallengeService challengeService;
 
     //----- Constructor ------//
@@ -23,8 +20,7 @@ public class ChallengeRestController {
         this.challengeService = challengeService;
     }
 
-    //----- Get Mappings -----//
-
+    //----- GET Mappings -----//
     @GetMapping("/challenges/challenger")
     public List<Challenge> getChallengesbyChallenger(@RequestHeader(value="Token") String tokenString) {
         return challengeService.getChallengesByChallenger(tokenString);
@@ -32,39 +28,26 @@ public class ChallengeRestController {
 
     @GetMapping("/challenges/challenged")
     public List<Challenge> getChallengesbyChallenged(@RequestHeader(value="Token") String tokenString) {
-        return challengeService.getChallengesByChallenged(tokenString);
+      return challengeService.getChallengesByChallenged(tokenString);
     }
 
-
-
     //----- POST Mappings -----//
-
     @PostMapping("/challenges")
     public Challenge createNewChallenge(@RequestHeader(value="Token") String tokenString,
                                         @RequestBody Player challenged) {
-
         return challengeService.create(challenged, tokenString);
     }
 
     @PostMapping("/challenges/{challengeId}")
     public Game answerChallenge(@PathVariable("challengeId") int challengeId,
                                 @RequestHeader(value ="Token") String tokenString) {
-
             return challengeService.acceptChallenge(challengeId, tokenString);
-
     }
 
-    //----- Delete Mappings -----//
-
+    //----- DELETE Mappings -----//
     @DeleteMapping("/challenges/{challengeId}")
     public String declineChallenge(@PathVariable("challengeId") int challengeId,
                                 @RequestHeader(value ="Token") String tokenString) {
-
         return challengeService.declineChallenge(challengeId, tokenString);
-
     }
-
-
-
 }
-

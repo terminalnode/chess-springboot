@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import se.newton.sysjg3.chessapi.entity.Challenge;
 import se.newton.sysjg3.chessapi.entity.Player;
+import se.newton.sysjg3.chessapi.entity.Token;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -59,8 +60,8 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
   @Override
   public List<Challenge> getChallengesByChallenger(Player challenger) {
     Session session = entityManager.unwrap(Session.class);
-    Query<Challenge> query = session.createQuery("from Challenges where Challenges.challenger_id= :challenger_id", Challenge.class);
-    query.setParameter("challenger_id", challenger.getId());
+    Query<Challenge> query = session.createQuery("FROM Challenge c WHERE c.challenger = :player", Challenge.class);
+    query.setParameter("player", challenger);
     return query.getResultList();
 
   }
@@ -68,15 +69,8 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
   @Override
   public List<Challenge> getChallengesByChallenged(Player challenged){
     Session session = entityManager.unwrap(Session.class);
-    Query<Challenge> query = session.createQuery("from Challenges where Challenges.challenged_id = :challenged_id", Challenge.class);
-    query.setParameter("challenged_id", challenged.getId());
+    Query<Challenge> query = session.createQuery("FROM Challenge c WHERE c.challenged = :player", Challenge.class);
+    query.setParameter("player", challenged);
     return query.getResultList();
-
   }
-
-
-
-
-
-
 }

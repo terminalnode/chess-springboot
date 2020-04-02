@@ -12,42 +12,42 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class ChallengeRestController {
-    private ChallengeService challengeService;
+  private ChallengeService challengeService;
 
-    //----- Constructor ------//
-    @Autowired
-    public ChallengeRestController (ChallengeService challengeService) {
-        this.challengeService = challengeService;
-    }
+  //----- Constructor ------//
+  @Autowired
+  public ChallengeRestController (ChallengeService challengeService) {
+    this.challengeService = challengeService;
+  }
 
-    //----- GET Mappings -----//
-    @GetMapping("/challenges/challenger")
-    public List<Challenge> getChallengesbyChallenger(@RequestHeader(value="Token") String tokenString) {
-        return challengeService.getChallengesByChallenger(tokenString);
-    }
+  //----- GET Mappings -----//
+  @GetMapping("/challenges/challenger")
+  public List<Challenge> getChallengesByChallenger(@RequestHeader(value="Token") String tokenString) {
+    return challengeService.getChallengesByChallenger(tokenString);
+  }
 
-    @GetMapping("/challenges/challenged")
-    public List<Challenge> getChallengesbyChallenged(@RequestHeader(value="Token") String tokenString) {
-      return challengeService.getChallengesByChallenged(tokenString);
-    }
+  @GetMapping("/challenges/challenged")
+  public List<Challenge> getChallengesByChallenged(@RequestHeader(value="Token") String tokenString) {
+    return challengeService.getChallengesByChallenged(tokenString);
+  }
 
-    //----- POST Mappings -----//
-    @PostMapping("/challenges")
-    public Challenge createNewChallenge(@RequestHeader(value="Token") String tokenString,
-                                        @RequestBody Player challenged) {
-        return challengeService.create(challenged, tokenString);
-    }
+  //----- POST Mappings -----//
+  @PostMapping("/challenges")
+  public Challenge createNewChallenge(@RequestHeader(value="Token") String tokenString,
+                                      @RequestBody Player challenged) {
+    return challengeService.create(challenged, tokenString);
+  }
 
-    @PostMapping("/challenges/{challengeId}")
-    public Game answerChallenge(@PathVariable("challengeId") int challengeId,
-                                @RequestHeader(value ="Token") String tokenString) {
-            return challengeService.acceptChallenge(challengeId, tokenString);
-    }
+  @PostMapping("/challenges/{challengeId}")
+  public Game answerChallenge(@PathVariable("challengeId") int challengeId,
+                              @RequestHeader(value ="Token") String tokenString) {
+    return challengeService.acceptChallenge(challengeId, tokenString);
+  }
 
-    //----- DELETE Mappings -----//
-    @DeleteMapping("/challenges/{challengeId}")
-    public String declineChallenge(@PathVariable("challengeId") int challengeId,
-                                @RequestHeader(value ="Token") String tokenString) {
-        return challengeService.declineChallenge(challengeId, tokenString);
-    }
+  //----- DELETE Mappings -----//
+  @DeleteMapping("/challenges/{challengeId}")
+  public String declineChallenge(@PathVariable("challengeId") int challengeId,
+                                 @RequestHeader(value ="Token") String tokenString) {
+    return challengeService.declineChallenge(challengeId, tokenString);
+  }
 }

@@ -57,6 +57,8 @@ public class Game {
   public Game(Player whitePlayer, Player blackPlayer) {
     this.whitePlayer = whitePlayer;
     this.blackPlayer = blackPlayer;
+    this.isWhiteInCheck = false;
+    this.isBlackInCheck = false;
     whitesTurn = true;
     turnsTaken = 0;
     pieces = generatePieces();
@@ -310,11 +312,11 @@ public class Game {
     return finished;
   }
 
-  public boolean getBlackInCheck() {
+  public boolean isBlackInCheck() {
     return isBlackInCheck;
   }
 
-  public boolean getWhiteInCheck() {
+  public boolean isWhiteInCheck() {
     return isWhiteInCheck;
   }
 }

@@ -1,5 +1,6 @@
 package se.newton.sysjg3.chessapi.service;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import se.newton.sysjg3.chessapi.entity.Challenge;
 import se.newton.sysjg3.chessapi.entity.Game;
 import se.newton.sysjg3.chessapi.helpers.ChessMove;

@@ -56,7 +56,7 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
     public Challenge getChallengeById(long challengeId) {
       try {
         Session session = entityManager.unwrap(Session.class);
-        return (Challenge) session.getReference(Challenge.class, challengeId);
+        return session.getReference(Challenge.class, challengeId);
       } catch (EntityNotFoundException e) {
         throw new NoSuchChallengeException("That challenge does not exist.");
       }

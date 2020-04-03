@@ -1,5 +1,6 @@
 package se.newton.sysjg3.chessapi.rest.controllers;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import se.newton.sysjg3.chessapi.entity.Challenge;
@@ -30,8 +31,10 @@ public class GameRestController {
 
   @GetMapping("/games/{gameId}")
   public Game getCurrentPlayerGamesFromGameId(@RequestHeader(value="Token") String tokenString,
-                                                      @PathVariable long gameId) {
-    return gameService.getCurrentPlayerGameFromGameId(tokenString, gameId);
+                                                     @PathVariable long gameId) throws RuntimeException {
+      
+      return gameService.getCurrentPlayerGameFromGameId(tokenString, gameId);
+
   }
 
   //----- Post Mappings -----//
@@ -40,9 +43,12 @@ public class GameRestController {
   public String makeMoveInGame(@RequestHeader(value="Token") String tokenString,
                                @RequestBody ChessMove move,
                                @PathVariable long gameId) {
-
-    gameService.makeMove(move, gameId, tokenString);
-
+    try {
+      gameService.makeMove(move, gameId, tokenString);
+    }
+    catch (Exception e) {
+      System.out.println(">>>CAUGHT THE EXCEPTION THIS TIME");
+    }
     return "Move made succesfully";
   }
 

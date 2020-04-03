@@ -1,5 +1,6 @@
 package se.newton.sysjg3.chessapi.service;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.newton.sysjg3.chessapi.dao.GameDAO;
@@ -8,6 +9,7 @@ import se.newton.sysjg3.chessapi.entity.Game;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.helpers.ChessMove;
 import se.newton.sysjg3.chessapi.rest.exceptions.IllegalMoveException;
+import se.newton.sysjg3.chessapi.rest.exceptions.NoSuchGameException;
 import se.newton.sysjg3.chessapi.rest.exceptions.NotPartOfThisGameException;
 
 import javax.transaction.Transactional;
@@ -46,7 +48,7 @@ public class GameServiceImplementation implements GameService {
 
     @Override
     @Transactional
-    public Game makeMove(ChessMove move, Game game, String tokenString) {
+    public Game makeMove(ChessMove move, Game game, String tokenString)  {
 
         Player movingPlayer = tokenService.getPlayerFromToken(tokenString);
         if (movingPlayer != game.getCurrentPlayer()) {
@@ -55,11 +57,14 @@ public class GameServiceImplementation implements GameService {
         if (game.validateMove(move)) {
             gameDAO.makeMove(move, game);
         }
+        else {
+            throw new IllegalMoveException("The submitted move is not valid.");
+        }
         return game;
     }
 
     @Override
-    public Game makeMove(ChessMove move, long gameId, String tokenString) {
+    public Game makeMove(ChessMove move, long gameId, String tokenString)  {
         Game game = gameDAO.getGameFromId(gameId);
         return makeMove(move, game, tokenString);
     }
@@ -78,8 +83,19 @@ public class GameServiceImplementation implements GameService {
 
     @Override
     public Game getCurrentPlayerGameFromGameId(String tokenString, long gameId) {
-        Player currentPlayer = tokenService.getPlayerFromToken(tokenString);
+        Player currentPlayer = null;
+        try {
+             currentPlayer = tokenService.getPlayerFromToken(tokenString);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("MOO");
+            System.exit(1);
+        }
         Game game = gameDAO.getGameFromId(gameId);
+        if (game == null) {
+            throw new NoSuchGameException("Unrecognized game id: " + gameId);
+        }
         if (currentPlayer != game.getBlackPlayer() && currentPlayer != game.getWhitePlayer()) {
             throw new NotPartOfThisGameException("This player is not part of this game!");
         }
@@ -87,7 +103,7 @@ public class GameServiceImplementation implements GameService {
         return game;
     }
 
-    public void setColorMessage(Player player, Game game) {
+    private void setColorMessage(Player player, Game game) {
         if (player == game.getBlackPlayer()) {
             game.setGettingPlayerWhite(false);
         }

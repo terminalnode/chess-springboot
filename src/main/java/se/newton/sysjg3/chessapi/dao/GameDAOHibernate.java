@@ -1,5 +1,6 @@
 package se.newton.sysjg3.chessapi.dao;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import se.newton.sysjg3.chessapi.entity.Challenge;
@@ -44,15 +45,12 @@ public class GameDAOHibernate implements GameDAO {
   @Override
   public Game makeMove(ChessMove move, Game game) {
     Session session = entityManager.unwrap(Session.class);
+      game = ManagedEntityHelper.getManaged(game, entityManager);
 
-    game = ManagedEntityHelper.getManaged(game, entityManager);
     game.movePiece(move);
     if(game.checkForCheck()) {
       if (game.checkForCheckMate()) {
         game.setFinished(true);
-      }
-      if (game.isWhitesTurn()) {
-
       }
     }
     session.save(game);
@@ -74,15 +72,10 @@ public class GameDAOHibernate implements GameDAO {
 
   }
 
+
   public Game getGameFromId(long gameId) {
     Session session = entityManager.unwrap(Session.class);
-    try {
-      return (Game) session.getReference(Game.class, gameId);
-    }
-    catch (EntityNotFoundException e) {
-      throw new NoSuchGameException("The game ID: " + gameId + " does not correspond to a game in the database");
-    }
-
+      return session.get(Game.class, gameId);
   }
 
 }

@@ -3,7 +3,6 @@ package se.newton.sysjg3.chessapi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.newton.sysjg3.chessapi.dao.GameDAO;
-import se.newton.sysjg3.chessapi.dao.GameDAOHibernate;
 import se.newton.sysjg3.chessapi.entity.Challenge;
 import se.newton.sysjg3.chessapi.entity.Game;
 import se.newton.sysjg3.chessapi.entity.Player;
@@ -69,7 +68,12 @@ public class GameServiceImplementation implements GameService {
     public List<Game> getCurrentPlayerGamesFromToken(String tokenString) {
 
         Player currentPlayer = tokenService.getPlayerFromToken(tokenString);
-        return gameDAO.getAllGamesForPlayer(currentPlayer);
+        List<Game> gameList = gameDAO.getAllGamesForPlayer(currentPlayer);
+
+        for (Game game:gameList) {
+            setColorMessage(currentPlayer, game);
+        }
+        return gameList;
     }
 
     @Override
@@ -79,7 +83,18 @@ public class GameServiceImplementation implements GameService {
         if (currentPlayer != game.getBlackPlayer() && currentPlayer != game.getWhitePlayer()) {
             throw new NotPartOfThisGameException("This player is not part of this game!");
         }
+        setColorMessage(currentPlayer, game);
         return game;
+    }
+
+    public void setColorMessage(Player player, Game game) {
+        if (player == game.getBlackPlayer()) {
+            game.setGettingPlayerWhite(false);
+        }
+        else {
+            game.setGettingPlayerWhite(true);
+        }
+
     }
 
 

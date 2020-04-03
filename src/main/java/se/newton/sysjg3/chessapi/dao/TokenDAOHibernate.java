@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.entity.Token;
+import se.newton.sysjg3.chessapi.rest.exceptions.NoSuchTokenException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -91,15 +92,25 @@ public class TokenDAOHibernate implements TokenDAO {
 
   @Override
   public Token getTokenFromTokenString(Token token) {
+    try {
     return getTokenFromTokenString(token.getTokenString());
+    }
+    catch (NullPointerException e) {
+        throw new NoSuchTokenException("Unrecognised player Token");
+    }
   }
 
   @Override
   public Token getTokenFromTokenString(String tokenString) {
     Session session = entityManager.unwrap(Session.class);
+    try {
     return session.byNaturalId(Token.class)
         .using("tokenString", tokenString)
         .load();
+    }
+    catch (NullPointerException e) {
+      throw new NoSuchTokenException("Unrecognised player Token");
+    }
   }
 
   @Override

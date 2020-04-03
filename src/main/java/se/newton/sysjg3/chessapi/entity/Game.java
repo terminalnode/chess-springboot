@@ -1,6 +1,5 @@
 package se.newton.sysjg3.chessapi.entity;
 
-import ch.qos.logback.core.spi.LifeCycle;
 import se.newton.sysjg3.chessapi.entity.chesspieces.*;
 import se.newton.sysjg3.chessapi.helpers.ChessMove;
 import se.newton.sysjg3.chessapi.rest.exceptions.IllegalMoveException;
@@ -44,6 +43,9 @@ public class Game {
 
   @Transient
   Map<Integer, Piece> pieceMap;
+
+  @Transient
+  boolean isGettingPlayerWhite;
 
   //----- Static fields -----//
   private static boolean WHITE = true;
@@ -283,6 +285,10 @@ public class Game {
     isWhiteInCheck = whiteInCheck;
   }
 
+  public void setGettingPlayerWhite(boolean gettingPlayerWhite) {
+    this.isGettingPlayerWhite = gettingPlayerWhite;
+  }
+
   //----- Getters -----//
   public long getId() {
     return id;
@@ -318,5 +324,9 @@ public class Game {
 
   public boolean isWhiteInCheck() {
     return isWhiteInCheck;
+  }
+
+  public boolean getGettingPlayerWhite() {
+    return isGettingPlayerWhite;
   }
 }

@@ -1,5 +1,6 @@
 package se.newton.sysjg3.chessapi.entity.chesspieces;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import se.newton.sysjg3.chessapi.entity.Game;
 
 import javax.persistence.*;
@@ -31,7 +32,8 @@ public abstract class Piece {
   protected boolean moved;
 
   @ManyToOne
-  @JoinColumn(name = "game_id")
+  @JsonIgnore
+  @JoinColumn(name = "game_id", nullable = false)
   private Game game;
 
 
@@ -40,11 +42,12 @@ public abstract class Piece {
     // Empty no-arg constructor
   }
 
-  public Piece(int internalId, int x, int y, boolean isWhite) {
+  public Piece(int internalId, int x, int y, boolean isWhite, Game game) {
     this.internalId = internalId;
     this.x = x;
     this.y = y;
     this.isWhite = isWhite;
+    this.game = game;
     moved = false;
   }
 

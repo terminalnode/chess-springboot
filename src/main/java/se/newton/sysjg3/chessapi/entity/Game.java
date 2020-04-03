@@ -5,10 +5,7 @@ import se.newton.sysjg3.chessapi.helpers.ChessMove;
 import se.newton.sysjg3.chessapi.rest.exceptions.IllegalMoveException;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Table(name = "game")
@@ -33,7 +30,6 @@ public class Game {
   private int turnsTaken;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
-  @Column(name = "pieces")
   private List<Piece> pieces;
 
   @Column(name = "finished")
@@ -66,33 +62,33 @@ public class Game {
 
     // Add pawns
     for (int x = 0; x < 8; x++) {
-      list.add(new Pawn(++id, x, 1, WHITE));
-      list.add(new Pawn(++id, x, 6, BLACK));
+      list.add(new Pawn(++id, x, 1, WHITE, this));
+      list.add(new Pawn(++id, x, 6, BLACK, this));
     }
 
     // Add rooks
-    list.add(new Rook(++id, 0, 0, WHITE));
-    list.add(new Rook(++id, 7, 0, WHITE));
-    list.add(new Rook(++id, 0, 7, BLACK));
-    list.add(new Rook(++id, 7, 7, BLACK));
+    list.add(new Rook(++id, 0, 0, WHITE, this));
+    list.add(new Rook(++id, 7, 0, WHITE, this));
+    list.add(new Rook(++id, 0, 7, BLACK, this));
+    list.add(new Rook(++id, 7, 7, BLACK, this));
 
     // Add knights
-    list.add(new Knight(++id, 1, 0, WHITE));
-    list.add(new Knight(++id, 6, 0, WHITE));
-    list.add(new Knight(++id, 1, 7, BLACK));
-    list.add(new Knight(++id, 6, 7, BLACK));
+    list.add(new Knight(++id, 1, 0, WHITE, this));
+    list.add(new Knight(++id, 6, 0, WHITE, this));
+    list.add(new Knight(++id, 1, 7, BLACK, this));
+    list.add(new Knight(++id, 6, 7, BLACK, this));
 
     // Add bishops
-    list.add(new Bishop(++id, 2, 0, WHITE));
-    list.add(new Bishop(++id, 5, 0, WHITE));
-    list.add(new Bishop(++id, 2, 7, BLACK));
-    list.add(new Bishop(++id, 5, 7, BLACK));
+    list.add(new Bishop(++id, 2, 0, WHITE, this));
+    list.add(new Bishop(++id, 5, 0, WHITE, this));
+    list.add(new Bishop(++id, 2, 7, BLACK, this));
+    list.add(new Bishop(++id, 5, 7, BLACK, this));
 
     // Add kings and queens
-    list.add(new King(++id, 4, 0, WHITE));
-    list.add(new King(++id, 4, 7, BLACK));
-    list.add(new Queen(++id, 3, 0, WHITE));
-    list.add(new Queen(++id, 3, 7, BLACK));
+    list.add(new King(++id, 4, 0, WHITE, this));
+    list.add(new King(++id, 4, 7, BLACK, this));
+    list.add(new Queen(++id, 3, 0, WHITE, this));
+    list.add(new Queen(++id, 3, 7, BLACK, this));
 
     return list;
   }

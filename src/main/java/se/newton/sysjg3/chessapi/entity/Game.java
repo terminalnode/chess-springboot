@@ -278,7 +278,7 @@ public class Game {
   }
 
   public void setWhiteInCheck(boolean whiteInCheck) {
-    isWhiteInCheck = whiteInCheck
+    isWhiteInCheck = whiteInCheck;
   }
 
   //----- Getters -----//

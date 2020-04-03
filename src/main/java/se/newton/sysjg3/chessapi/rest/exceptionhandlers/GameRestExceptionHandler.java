@@ -11,19 +11,9 @@ import se.newton.sysjg3.chessapi.rest.exceptions.*;
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class ChallengeRestExceptionHandler extends GenericRestExceptionHandler {
+public class GameRestExceptionHandler extends GenericRestExceptionHandler {
   @ExceptionHandler
-  public ResponseEntity<GenericErrorResponse> handleException(ChallengeAlreadyExistsException exc) {
-    return responseEntityGenerator(exc, HttpStatus.CONFLICT);
-  }
-
-  @ExceptionHandler
-  public ResponseEntity<GenericErrorResponse> handleException(ChallengeIdMismatchException exc) {
-    return responseEntityGenerator(exc, HttpStatus.UNAUTHORIZED);
-  }
-
-  @ExceptionHandler
-  public ResponseEntity<GenericErrorResponse> handleException(NoSuchChallengeException exc) {
+  public ResponseEntity<GenericErrorResponse> handleException(NoSuchGameException exc) {
     return responseEntityGenerator(exc, HttpStatus.NOT_FOUND);
   }
 }

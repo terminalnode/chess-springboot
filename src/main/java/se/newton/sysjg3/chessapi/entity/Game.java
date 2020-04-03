@@ -124,6 +124,7 @@ public class Game {
       movingPiece.setX(chessMove.getDestination()[1]);
 
       this.turnsTaken++;
+      whitesTurn = !whitesTurn;
 
     }
   }

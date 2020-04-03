@@ -3,6 +3,7 @@ package se.newton.sysjg3.chessapi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.newton.sysjg3.chessapi.dao.GameDAO;
+import se.newton.sysjg3.chessapi.dao.GameDAOHibernate;
 import se.newton.sysjg3.chessapi.entity.Challenge;
 import se.newton.sysjg3.chessapi.entity.Game;
 import se.newton.sysjg3.chessapi.entity.Player;
@@ -10,6 +11,7 @@ import se.newton.sysjg3.chessapi.helpers.ChessMove;
 import se.newton.sysjg3.chessapi.rest.exceptions.IllegalMoveException;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class GameServiceImplementation implements GameService {
@@ -42,6 +44,7 @@ public class GameServiceImplementation implements GameService {
         return game;
     }
 
+    @Override
     @Transactional
     public Game makeMove(ChessMove move, Game game, String tokenString) {
 
@@ -53,6 +56,18 @@ public class GameServiceImplementation implements GameService {
             gameDAO.makeMove(move, game);
         }
         return game;
+    }
+
+    @Override
+    public Game makeMove(ChessMove move, long gameId, String tokenString) {
+        Game game = gameDAO.getGameFromId(gameId);
+        return makeMove(move, game, tokenString);
+    }
+
+    public List<Game> getCurrentPlayerGamesFromToken(String tokenString) {
+
+        Player currentPlayer = tokenService.getPlayerFromToken(tokenString);
+        return gameDAO.getAllGamesForPlayer(currentPlayer);
     }
 
 

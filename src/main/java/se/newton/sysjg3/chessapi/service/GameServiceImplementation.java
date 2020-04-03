@@ -9,6 +9,7 @@ import se.newton.sysjg3.chessapi.entity.Game;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.helpers.ChessMove;
 import se.newton.sysjg3.chessapi.rest.exceptions.IllegalMoveException;
+import se.newton.sysjg3.chessapi.rest.exceptions.NotPartOfThisGameException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -69,6 +70,16 @@ public class GameServiceImplementation implements GameService {
 
         Player currentPlayer = tokenService.getPlayerFromToken(tokenString);
         return gameDAO.getAllGamesForPlayer(currentPlayer);
+    }
+
+    @Override
+    public Game getCurrentPlayerGameFromGameId(String tokenString, long gameId) {
+        Player currentPlayer = tokenService.getPlayerFromToken(tokenString);
+        Game game = gameDAO.getGameFromId(gameId);
+        if (currentPlayer != game.getBlackPlayer() && currentPlayer != game.getWhitePlayer()) {
+            throw new NotPartOfThisGameException("This player is not part of this game!");
+        }
+        return game;
     }
 
 

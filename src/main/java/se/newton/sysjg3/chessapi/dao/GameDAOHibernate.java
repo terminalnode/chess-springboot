@@ -13,6 +13,7 @@ import org.hibernate.query.Query;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.helpers.ChessMove;
 import se.newton.sysjg3.chessapi.rest.exceptions.NoSuchGameException;
+import se.newton.sysjg3.chessapi.rest.exceptions.NotPartOfThisGameException;
 
 import java.util.List;
 
@@ -74,7 +75,6 @@ public class GameDAOHibernate implements GameDAO {
       throw new NoSuchGameException("The game ID: " + gameId + " does not correspond to a game in the database");
     }
 
-
-
   }
+
 }

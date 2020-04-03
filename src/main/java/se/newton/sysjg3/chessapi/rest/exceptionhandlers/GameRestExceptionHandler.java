@@ -16,4 +16,9 @@ public class GameRestExceptionHandler extends GenericRestExceptionHandler {
   public ResponseEntity<GenericErrorResponse> handleException(NoSuchGameException exc) {
     return responseEntityGenerator(exc, HttpStatus.NOT_FOUND);
   }
+
+  @ExceptionHandler
+  public ResponseEntity<GenericErrorResponse> handleException(NotPartOfThisGameException exc) {
+    return responseEntityGenerator(exc, HttpStatus.FORBIDDEN);
+  }
 }

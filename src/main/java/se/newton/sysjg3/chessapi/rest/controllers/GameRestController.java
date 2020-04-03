@@ -28,6 +28,12 @@ public class GameRestController {
     return gameService.getCurrentPlayerGamesFromToken(tokenString);
   }
 
+  @GetMapping("/games/{gameId}")
+  public Game getCurrentPlayerGamesFromGameId(@RequestHeader(value="Token") String tokenString,
+                                                      @PathVariable long gameId) {
+    return gameService.getCurrentPlayerGameFromGameId(tokenString, gameId);
+  }
+
   //----- Post Mappings -----//
 
   @PostMapping("/games/{gameId}")

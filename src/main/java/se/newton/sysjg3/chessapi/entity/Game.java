@@ -1,5 +1,6 @@
 package se.newton.sysjg3.chessapi.entity;
 
+import ch.qos.logback.core.spi.LifeCycle;
 import se.newton.sysjg3.chessapi.entity.chesspieces.*;
 import se.newton.sysjg3.chessapi.helpers.ChessMove;
 import se.newton.sysjg3.chessapi.rest.exceptions.IllegalMoveException;
@@ -28,6 +29,12 @@ public class Game {
 
   @Column(name = "turns_taken")
   private int turnsTaken;
+
+  @Column(name = "black_in_check")
+  private boolean isBlackInCheck;
+
+  @Column(name = "white_in_check")
+  private boolean isWhiteInCheck;
 
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
   private List<Piece> pieces;
@@ -144,10 +151,15 @@ public class Game {
       }
       for (int[] possibleMove:movingPiece.getMoves(pieces)) {
         if (Arrays.equals(move.getDestination(), possibleMove)) {
+          if (!checkForCheck())
           return true;
         }
       }
       return false;
+  }
+
+  boolean isCurrentPlayerInCheck() {
+    return whitesTurn ? isWhiteInCheck : isBlackInCheck;
   }
 
   public boolean checkForCheck() {
@@ -165,6 +177,8 @@ public class Game {
     }
     return false;
   }
+
+
 
   public boolean checkForCheckMate() {
 

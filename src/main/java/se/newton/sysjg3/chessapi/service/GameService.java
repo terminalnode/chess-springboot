@@ -12,6 +12,7 @@ public interface GameService {
     public List<Game> getCurrentPlayerGamesFromToken(String tokenString);
     public Game makeMove(ChessMove move, Game game, String tokenString);
     Game makeMove(ChessMove move, long gameId, String tokenString);
+    public Game getCurrentPlayerGameFromGameId(String tokenString, long gameId);
 
 
 }

@@ -273,6 +273,14 @@ public class Game {
     this.finished = finished;
   }
 
+  public void setBlackInCheck(boolean blackInCheck) {
+    isBlackInCheck = blackInCheck;
+  }
+
+  public void setWhiteInCheck(boolean whiteInCheck) {
+    isWhiteInCheck = whiteInCheck
+  }
+
   //----- Getters -----//
   public long getId() {
     return id;
@@ -300,5 +308,13 @@ public class Game {
 
   public boolean isFinished() {
     return finished;
+  }
+
+  public boolean getBlackInCheck() {
+    return isBlackInCheck;
+  }
+
+  public boolean getWhiteInCheck() {
+    return isWhiteInCheck;
   }
 }

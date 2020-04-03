@@ -47,6 +47,14 @@ public class GameDAOHibernate implements GameDAO {
 
     game = ManagedEntityHelper.getManaged(game, entityManager);
     game.movePiece(move);
+    if(game.checkForCheck()) {
+      if (game.checkForCheckMate()) {
+        game.setFinished(true);
+      }
+      if (game.isWhitesTurn()) {
+        game.
+      }
+    }
     session.save(game);
 
     return game;

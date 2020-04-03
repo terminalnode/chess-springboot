@@ -1,5 +1,6 @@
 package se.newton.sysjg3.chessapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import se.newton.sysjg3.chessapi.entity.chesspieces.*;
 import se.newton.sysjg3.chessapi.helpers.ChessMove;
 import se.newton.sysjg3.chessapi.rest.exceptions.IllegalMoveException;
@@ -9,6 +10,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "game")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Game {
   @Id
   @Column(name = "id")

@@ -19,6 +19,6 @@ public class Rook extends Piece {
 
   @Override
   public List<int[]> getMoves(List<Piece> pieces) {
-    return null;
+    return getStraightMoves(pieces);
   }
 }

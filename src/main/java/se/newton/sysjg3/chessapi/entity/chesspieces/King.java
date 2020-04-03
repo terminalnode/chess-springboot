@@ -4,6 +4,7 @@ import se.newton.sysjg3.chessapi.entity.Game;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,6 +20,24 @@ public class King extends Piece {
 
   @Override
   public List<int[]> getMoves(List<Piece> pieces) {
-    return null;
+    List<int[]> moves = new ArrayList<>();
+    int x = getX();
+    int y = getY();
+
+    int[][] theoreticalMoves = new int[][]{
+        { x    , y + 1 },
+        { x    , y - 1 },
+        { x + 1, y     },
+        { x - 1, y     },
+        { x + 1, y + 1 },
+        { x + 1, y - 1 },
+        { x - 1, y + 1 },
+        { x - 1, y - 1 }
+    };
+
+    for (int[] theoreticalMove : theoreticalMoves) {
+      addMoveToList(moves, theoreticalMove[0], theoreticalMove[1], pieces);
+    }
+    return moves;
   }
 }

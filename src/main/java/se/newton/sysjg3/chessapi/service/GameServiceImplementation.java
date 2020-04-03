@@ -64,6 +64,7 @@ public class GameServiceImplementation implements GameService {
         return makeMove(move, game, tokenString);
     }
 
+    @Override
     public List<Game> getCurrentPlayerGamesFromToken(String tokenString) {
 
         Player currentPlayer = tokenService.getPlayerFromToken(tokenString);

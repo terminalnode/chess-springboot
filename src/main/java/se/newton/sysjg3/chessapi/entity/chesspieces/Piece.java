@@ -13,12 +13,12 @@ import java.util.List;
 @DiscriminatorColumn(name = "piece_type")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "class")
 @JsonSubTypes(value = {
-    @JsonSubTypes.Type(value = Bishop.class),
-    @JsonSubTypes.Type(value = Knight.class),
-    @JsonSubTypes.Type(value = King.class),
-    @JsonSubTypes.Type(value = Pawn.class),
-    @JsonSubTypes.Type(value = Queen.class),
-    @JsonSubTypes.Type(value = Rook.class)
+    @JsonSubTypes.Type(value = Bishop.class, name = "bishop"),
+    @JsonSubTypes.Type(value = Knight.class, name = "knight"),
+    @JsonSubTypes.Type(value = King.class, name = "king"),
+    @JsonSubTypes.Type(value = Pawn.class, name = "pawn"),
+    @JsonSubTypes.Type(value = Queen.class, name = "queen"),
+    @JsonSubTypes.Type(value = Rook.class, name = "rook")
 })
 @Table(name = "piece")
 public abstract class Piece {

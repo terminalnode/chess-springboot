@@ -32,13 +32,8 @@ public class Game {
   @Column(name = "turns_taken")
   private int turnsTaken;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "game")
   @Column(name = "pieces")
-  @JoinTable(
-      name = "piece",
-      joinColumns = @JoinColumn(name="game_id"),
-      inverseJoinColumns = @JoinColumn(name="piece_id")
-  )
   private List<Piece> pieces;
 
   @Column(name = "finished")

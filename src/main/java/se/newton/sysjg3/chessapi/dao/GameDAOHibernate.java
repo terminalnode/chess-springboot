@@ -52,7 +52,7 @@ public class GameDAOHibernate implements GameDAO {
         game.setFinished(true);
       }
       if (game.isWhitesTurn()) {
-        game.
+
       }
     }
     session.save(game);

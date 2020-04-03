@@ -1,6 +1,8 @@
 package se.newton.sysjg3.chessapi.entity.chesspieces;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import se.newton.sysjg3.chessapi.entity.Game;
 
 import javax.persistence.*;
@@ -9,6 +11,15 @@ import java.util.List;
 @Entity
 @Inheritance
 @DiscriminatorColumn(name = "piece_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "class")
+@JsonSubTypes(value = {
+    @JsonSubTypes.Type(value = Bishop.class),
+    @JsonSubTypes.Type(value = Knight.class),
+    @JsonSubTypes.Type(value = King.class),
+    @JsonSubTypes.Type(value = Pawn.class),
+    @JsonSubTypes.Type(value = Queen.class),
+    @JsonSubTypes.Type(value = Rook.class)
+})
 @Table(name = "piece")
 public abstract class Piece {
   @Id

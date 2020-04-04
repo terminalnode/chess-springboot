@@ -126,20 +126,17 @@ public class Game {
       for (Piece piece:pieceMap.values()) {
         if (piece.getX() == chessMove.getDestination()[0]) {
           if (piece.getY() == chessMove.getDestination()[1]) {
-            takenPiece = piece;
+            pieces.remove(piece);
+            pieceMap.remove(piece);
             break;
           }
         }
       }
-      if (takenPiece != null) {
-        pieces.remove(takenPiece);
-        pieceMap.remove(takenPiece);
-      }
-
+      
       movingPiece.setX(chessMove.getDestination()[0]);
       movingPiece.setY(chessMove.getDestination()[1]);
 
-      this.turnsTaken++;
+      turnsTaken++;
       whitesTurn = !whitesTurn;
 
     }

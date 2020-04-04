@@ -107,6 +107,7 @@ public class Game {
   }
 
   public void populatePieceMap() {
+    Map<Integer, Piece> pieceMap = new HashMap<>();
     for (Piece piece:pieces) {
       pieceMap.put(piece.getInternalId(), piece);
     }

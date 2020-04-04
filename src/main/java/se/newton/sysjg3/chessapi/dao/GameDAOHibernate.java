@@ -46,6 +46,7 @@ public class GameDAOHibernate implements GameDAO {
   public Game makeMove(ChessMove move, Game game) {
     Session session = entityManager.unwrap(Session.class);
       game = ManagedEntityHelper.getManaged(game, entityManager);
+      game.populatePieceMap();
 
     game.movePiece(move);
     if(game.checkForCheck()) {

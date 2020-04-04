@@ -49,6 +49,8 @@ public class GameDAOHibernate implements GameDAO {
     game = ManagedEntityHelper.getManaged(game, entityManager);
 
     game.populatePieceMap();
+    game.removePieceAtCoordinates(move.getDestination()[0], move.getDestination()[1]);
+    session.save(game);
     game.movePiece(move);
 
     if(game.checkForCheck()) {

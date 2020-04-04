@@ -122,23 +122,24 @@ public class Game {
     else {
       System.out.println("Moving piece " + movingPiece.getInternalId() + " to (" + chessMove.getDestination()[0] + "," + chessMove.getDestination()[0] + ")");
 
-      Piece takenPiece = null;
-      for (Piece piece:pieceMap.values()) {
-        if (piece.getX() == chessMove.getDestination()[0]) {
-          if (piece.getY() == chessMove.getDestination()[1]) {
-            pieces.remove(piece);
-            pieceMap.remove(piece);
-            break;
-          }
-        }
-      }
-      
       movingPiece.setX(chessMove.getDestination()[0]);
       movingPiece.setY(chessMove.getDestination()[1]);
 
       turnsTaken++;
       whitesTurn = !whitesTurn;
 
+    }
+  }
+
+  public void removePieceAtCoordinates(int x, int y) {
+    for (Piece piece:pieceMap.values()) {
+      if (piece.getX() == x) {
+        if (piece.getY() == y) {
+          pieces.remove(piece);
+          pieceMap.remove(piece);
+          break;
+        }
+      }
     }
   }
 

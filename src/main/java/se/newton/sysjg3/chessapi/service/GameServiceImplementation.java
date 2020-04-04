@@ -51,6 +51,7 @@ public class GameServiceImplementation implements GameService {
     public Game makeMove(ChessMove move, Game game, String tokenString)  {
 
         Player movingPlayer = tokenService.getPlayerFromToken(tokenString);
+        game.populatePieceMap();
         if (movingPlayer != game.getCurrentPlayer()) {
             throw new IllegalMoveException("It is not you turn!");
         }

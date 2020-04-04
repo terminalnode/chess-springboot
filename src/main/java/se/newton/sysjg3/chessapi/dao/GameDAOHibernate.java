@@ -51,7 +51,9 @@ public class GameDAOHibernate implements GameDAO {
 
     game.populatePieceMap();
     Piece takenPiece = game.removePieceAtCoordinates(move.getDestination()[0], move.getDestination()[1]);
-    session.delete(takenPiece);
+    if (takenPiece != null) {
+      session.delete(takenPiece);
+    }
     game.movePiece(move);
 
     if(game.checkForCheck()) {

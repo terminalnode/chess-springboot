@@ -114,43 +114,34 @@ public class Game {
   }
 
 
-  public void movePiece(ChessMove chessMove) {
+  public Piece movePiece(ChessMove chessMove) {
     Piece movingPiece = getPieceByIdNumber(chessMove.getPieceNumber());
+
     if (movingPiece == null) {
       throw new IllegalMoveException("The piece is not on the board!");
-    }
-    else {
-      System.out.println("Moving piece " + movingPiece.getInternalId() + " to (" + chessMove.getDestination()[0] + "," + chessMove.getDestination()[0] + ")");
 
-      movingPiece.setX(chessMove.getDestination()[0]);
-      movingPiece.setY(chessMove.getDestination()[1]);
+    } else {
+      movingPiece.move(
+          chessMove.getDestination()[0],
+          chessMove.getDestination()[1]
+      );
+      movingPiece.setMoved(true);
 
       turnsTaken++;
       whitesTurn = !whitesTurn;
-
+      return movingPiece;
     }
   }
 
-  public Piece removePieceAtCoordinates(int x, int y) {
-
-    List<Piece> newPieces = new ArrayList<>();
-    for (Piece piece:pieces) {
+  public Piece getPieceAtCoordinates(int x, int y) {
+    Piece toBeRemoved = null;
+    for (Piece piece : pieces) {
       if (piece.getX() == x && piece.getY() == y) {
         return piece;
       }
     }
-    return null;
 
-
-//    for (Piece piece:pieceMap.values()) {
-//      if (piece.getX() == x) {
-//        if (piece.getY() == y) {
-//          pieces.remove(piece);
-//          pieceMap.remove(piece);
-//          break;
-//        }
-//      }
-//    }
+    return toBeRemoved;
   }
 
 
@@ -163,8 +154,9 @@ public class Game {
   }
 
   public boolean validateMove(ChessMove move) {
-      this.populatePieceMap();
+      populatePieceMap();
       Piece movingPiece = pieceMap.get(move.getPieceNumber());
+
       if (movingPiece == null) {
         return false;
       }
@@ -184,7 +176,6 @@ public class Game {
   }
 
   public boolean checkForCheck() {
-
     int kingId = whitesTurn ? 29 : 30;
     int[] kingPosition = new int[] {pieceMap.get(kingId).getX(), pieceMap.get(kingId).getY()};
 
@@ -202,19 +193,15 @@ public class Game {
 
 
   public boolean checkForCheckMate() {
-
     int kingId = whitesTurn ? 29 : 30;
-    int[] kingPosition = new int[] {pieceMap.get(kingId).getX(), pieceMap.get(kingId).getY()};
-
+    int[] kingPosition = new int[] { pieceMap.get(kingId).getX(), pieceMap.get(kingId).getY() };
     List<Piece> yourPieces = getOneColourPieces(whitesTurn);
 
-    for (Piece yourPiece:yourPieces) {
-      for (int[] position : yourPiece.getMoves(new ArrayList<Piece>(pieceMap.values()))) {
-        ChessMove potentialMove = new ChessMove(yourPiece.getInternalId(), position);
-
+    for (Piece yourPiece : yourPieces) {
+      for (int[] position : yourPiece.getMoves(new ArrayList<>(pieceMap.values()))) {
         Piece takenPiece = null;
+        ChessMove potentialMove = new ChessMove(yourPiece.getInternalId(), position);
         Piece originalPiece = pieceMap.get(potentialMove.getPieceNumber());
-
         int[] originalPosition= new int[] {originalPiece.getX(), originalPiece.getY()};
 
         for (Piece piece:pieceMap.values()) {
@@ -225,6 +212,7 @@ public class Game {
             }
           }
         }
+
         if (takenPiece != null) {
           pieceMap.remove(takenPiece);
         }
@@ -232,7 +220,7 @@ public class Game {
         originalPiece.setX(potentialMove.getDestination()[0]);
         originalPiece.setX(potentialMove.getDestination()[1]);
 
-        if(!checkForCheck()) {
+        if (!checkForCheck()) {
           if (takenPiece != null) {
             pieceMap.put(takenPiece.getInternalId(),takenPiece);
           }
@@ -244,6 +232,7 @@ public class Game {
         if (takenPiece != null) {
           pieceMap.put(takenPiece.getInternalId(), takenPiece);
         }
+
         originalPiece.setX(originalPosition[0]);
         originalPiece.setY(originalPosition[1]);
       }
@@ -253,7 +242,6 @@ public class Game {
   }
 
   public List<Piece> getOneColourPieces(boolean whitePieces) {
-
     List<Piece> listOfPieces = new ArrayList<>();
     for (Piece piece : pieces) {
       if (piece.isWhite() == whitePieces) {
@@ -263,7 +251,9 @@ public class Game {
     return listOfPieces;
   }
 
-
+  public void removePiece(Piece piece) {
+    pieces.remove(piece);
+  }
 
   //----- Setters -----//
   public void setId(long id) {

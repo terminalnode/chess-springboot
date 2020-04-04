@@ -1,22 +1,17 @@
 package se.newton.sysjg3.chessapi.dao;
 
-import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import se.newton.sysjg3.chessapi.entity.Challenge;
 import se.newton.sysjg3.chessapi.entity.Game;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.entity.chesspieces.Piece;
 import se.newton.sysjg3.chessapi.helpers.ChessMove;
-import se.newton.sysjg3.chessapi.rest.exceptions.NoSuchGameException;
-import se.newton.sysjg3.chessapi.rest.exceptions.NotPartOfThisGameException;
 
 import java.util.List;
 
@@ -45,25 +40,25 @@ public class GameDAOHibernate implements GameDAO {
   }
 
   @Override
+  @Transactional
   public Game makeMove(ChessMove move, Game game) {
     Session session = entityManager.unwrap(Session.class);
     game = ManagedEntityHelper.getManaged(game, entityManager);
-
     game.populatePieceMap();
-    Piece takenPiece = game.removePieceAtCoordinates(move.getDestination()[0], move.getDestination()[1]);
+
+    // If there is a piece at target location, remove it. Then move.
+    Piece takenPiece = game.getPieceAtCoordinates(move.getDestination()[0], move.getDestination()[1]);
+    game.movePiece(move);
+    if (game.checkForCheck() && game.checkForCheckMate()) {
+        game.setFinished(true);
+    }
+
+    // Remove the piece from the board and the session, then update the board.
     if (takenPiece != null) {
-      System.out.println(">>>DELETING A PIECE<<<");
+      game.removePiece(takenPiece);
       session.delete(takenPiece);
     }
-    game.movePiece(move);
-
-    if(game.checkForCheck()) {
-      if (game.checkForCheckMate()) {
-        game.setFinished(true);
-      }
-    }
-    session.save(game);
-
+    session.update(game);
     return game;
   }
 

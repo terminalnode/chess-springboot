@@ -44,9 +44,9 @@ public abstract class Piece {
   @Column(name = "moved")
   protected boolean moved;
 
-  @ManyToOne
+  @OneToOne
   @JsonIgnore
-  @JoinColumn(name = "game_id", nullable = false)
+  @JoinColumn(name = "game_id")
   private Game game;
 
 

@@ -1,6 +1,5 @@
 package se.newton.sysjg3.chessapi.service;
 
-import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.newton.sysjg3.chessapi.dao.GameDAO;
@@ -17,15 +16,12 @@ import java.util.List;
 
 @Service
 public class GameServiceImplementation implements GameService {
-
     private GameDAO gameDAO;
-
     private TokenService tokenService;
 
     @Autowired
     public GameServiceImplementation(GameDAO gameDAO, TokenService tokenService) {
         this.gameDAO = gameDAO;
-
         this.tokenService = tokenService;
     }
 
@@ -33,46 +29,42 @@ public class GameServiceImplementation implements GameService {
     @Transactional
     public Game createNewGame(Challenge challenge) {
         Game game;
-        //TODO Add proper 50/50 random here
-        if (true) {
+
+        if (Math.random() > 0.5) {
             game = new Game(challenge.getChallenger(), challenge.getChallenged());
-        }
-        else {
+        } else {
             game = new Game(challenge.getChallenged(), challenge.getChallenger());
         }
 
         gameDAO.create(game);
-
         return game;
     }
 
-    @Override
-    @Transactional
-    public Game makeMove(ChessMove move, Game game, String tokenString)  {
+  @Override
+  @Transactional
+  public Game makeMove(ChessMove move, long gameId, String token)  {
+    return makeMove(move, gameDAO.getGameFromId(gameId), token);
+  }
 
+    @Override
+    public Game makeMove(ChessMove move, Game game, String tokenString)  {
         Player movingPlayer = tokenService.getPlayerFromToken(tokenString);
+
         if (movingPlayer != game.getCurrentPlayer()) {
             throw new IllegalMoveException("It is not you turn!");
         }
+
         if (game.validateMove(move)) {
             gameDAO.makeMove(move, game);
-        }
-        else {
+        } else {
             throw new IllegalMoveException("The submitted move is not valid.");
         }
         return game;
     }
 
-    @Transactional
     @Override
-    public Game makeMove(ChessMove move, long gameId, String tokenString)  {
-        Game game = gameDAO.getGameFromId(gameId);
-        return makeMove(move, game, tokenString);
-    }
     @Transactional
-    @Override
     public List<Game> getCurrentPlayerGamesFromToken(String tokenString) {
-
         Player currentPlayer = tokenService.getPlayerFromToken(tokenString);
         List<Game> gameList = gameDAO.getAllGamesForPlayer(currentPlayer);
 
@@ -85,21 +77,24 @@ public class GameServiceImplementation implements GameService {
     @Override
     public Game getCurrentPlayerGameFromGameId(String tokenString, long gameId) {
         Player currentPlayer = null;
+
         try {
              currentPlayer = tokenService.getPlayerFromToken(tokenString);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("MOO");
             System.exit(1);
         }
+
         Game game = gameDAO.getGameFromId(gameId);
         if (game == null) {
             throw new NoSuchGameException("Unrecognized game id: " + gameId);
         }
+
         if (currentPlayer != game.getBlackPlayer() && currentPlayer != game.getWhitePlayer()) {
             throw new NotPartOfThisGameException("This player is not part of this game!");
         }
+
         setColorMessage(currentPlayer, game);
         return game;
     }
@@ -111,10 +106,5 @@ public class GameServiceImplementation implements GameService {
         else {
             game.setGettingPlayerWhite(true);
         }
-
     }
-
-
-
-
 }

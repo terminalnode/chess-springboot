@@ -120,6 +120,7 @@ public class Game {
       throw new IllegalMoveException("The piece is not on the board!");
     }
     else {
+      System.out.println("Moving piece " + movingPiece.getInternalId() + " to (" + chessMove.getDestination()[0] + "," + chessMove.getDestination()[0] + ")");
 
       Piece takenPiece = null;
       for (Piece piece:pieceMap.values()) {

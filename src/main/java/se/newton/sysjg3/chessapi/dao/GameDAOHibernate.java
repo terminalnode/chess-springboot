@@ -3,6 +3,7 @@ package se.newton.sysjg3.chessapi.dao;
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import se.newton.sysjg3.chessapi.entity.Challenge;
 import se.newton.sysjg3.chessapi.entity.Game;
 
@@ -45,10 +46,11 @@ public class GameDAOHibernate implements GameDAO {
   @Override
   public Game makeMove(ChessMove move, Game game) {
     Session session = entityManager.unwrap(Session.class);
-      game = ManagedEntityHelper.getManaged(game, entityManager);
-      game.populatePieceMap();
+    game = ManagedEntityHelper.getManaged(game, entityManager);
 
+    game.populatePieceMap();
     game.movePiece(move);
+
     if(game.checkForCheck()) {
       if (game.checkForCheckMate()) {
         game.setFinished(true);

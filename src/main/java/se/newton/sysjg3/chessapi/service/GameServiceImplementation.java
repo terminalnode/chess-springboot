@@ -63,12 +63,13 @@ public class GameServiceImplementation implements GameService {
         return game;
     }
 
+    @Transactional
     @Override
     public Game makeMove(ChessMove move, long gameId, String tokenString)  {
         Game game = gameDAO.getGameFromId(gameId);
         return makeMove(move, game, tokenString);
     }
-
+    @Transactional
     @Override
     public List<Game> getCurrentPlayerGamesFromToken(String tokenString) {
 

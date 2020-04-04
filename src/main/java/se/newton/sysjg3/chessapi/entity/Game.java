@@ -152,6 +152,7 @@ public class Game {
   }
 
   public boolean validateMove(ChessMove move) {
+      this.populatePieceMap();
       Piece movingPiece = pieceMap.get(move.getPieceNumber());
       if (movingPiece == null) {
         return false;

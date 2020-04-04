@@ -133,16 +133,14 @@ public class Game {
 
   public void removePieceAtCoordinates(int x, int y) {
 
-    int deathNumber = -1;
-    for (int i = 0; i < pieces.size(); i++) {
-      if (pieces.get(i).getX() == x) {
-        if (pieces.get(i).getY() == y) {
-          deathNumber = i;
-        }
-    }
-      if (deathNumber > -1) {
-        pieces.remove(i);
+    List<Piece> newPieces = new ArrayList<>();
+    for (Piece piece:pieces) {
+      if (piece.getX() != x || piece.getY() != y) {
+        newPieces.add(piece);
       }
+    }
+    pieces = newPieces;
+
 
 //    for (Piece piece:pieceMap.values()) {
 //      if (piece.getX() == x) {

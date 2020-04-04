@@ -131,15 +131,15 @@ public class Game {
     }
   }
 
-  public void removePieceAtCoordinates(int x, int y) {
+  public Piece removePieceAtCoordinates(int x, int y) {
 
     List<Piece> newPieces = new ArrayList<>();
     for (Piece piece:pieces) {
-      if (piece.getX() != x || piece.getY() != y) {
-        newPieces.add(piece);
+      if (piece.getX() == x && piece.getY() == y) {
+        return piece;
       }
     }
-    pieces = newPieces;
+    return null;
 
 
 //    for (Piece piece:pieceMap.values()) {
@@ -152,7 +152,7 @@ public class Game {
 //      }
 //    }
   }
-  
+
 
   public Piece getPieceByIdNumber(int idNumber) {
     return pieceMap.get(idNumber);

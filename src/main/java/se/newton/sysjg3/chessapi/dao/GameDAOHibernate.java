@@ -13,6 +13,7 @@ import javax.persistence.EntityNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import se.newton.sysjg3.chessapi.entity.Player;
+import se.newton.sysjg3.chessapi.entity.chesspieces.Piece;
 import se.newton.sysjg3.chessapi.helpers.ChessMove;
 import se.newton.sysjg3.chessapi.rest.exceptions.NoSuchGameException;
 import se.newton.sysjg3.chessapi.rest.exceptions.NotPartOfThisGameException;
@@ -49,8 +50,8 @@ public class GameDAOHibernate implements GameDAO {
     game = ManagedEntityHelper.getManaged(game, entityManager);
 
     game.populatePieceMap();
-    game.removePieceAtCoordinates(move.getDestination()[0], move.getDestination()[1]);
-    session.save(game);
+    Piece takenPiece = game.removePieceAtCoordinates(move.getDestination()[0], move.getDestination()[1]);
+    session.delete(takenPiece);
     game.movePiece(move);
 
     if(game.checkForCheck()) {

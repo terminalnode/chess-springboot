@@ -132,15 +132,27 @@ public class Game {
   }
 
   public void removePieceAtCoordinates(int x, int y) {
-    for (Piece piece:pieceMap.values()) {
-      if (piece.getX() == x) {
-        if (piece.getY() == y) {
-          pieces.remove(piece);
-          pieceMap.remove(piece);
-          break;
+
+    int deathNumber = -1;
+    for (int i = 0; i < pieces.size(); i++) {
+      if (pieces.get(i).getX() == x) {
+        if (pieces.get(i).getY() == y) {
+          deathNumber = i;
         }
-      }
     }
+      if (deathNumber > -1) {
+        pieces.remove(i);
+      }
+
+//    for (Piece piece:pieceMap.values()) {
+//      if (piece.getX() == x) {
+//        if (piece.getY() == y) {
+//          pieces.remove(piece);
+//          pieceMap.remove(piece);
+//          break;
+//        }
+//      }
+//    }
   }
 
   public Piece getPieceByIdNumber(int idNumber) {

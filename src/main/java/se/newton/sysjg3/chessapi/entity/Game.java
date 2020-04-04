@@ -152,7 +152,7 @@ public class Game {
 //      }
 //    }
   }
-  }
+  
 
   public Piece getPieceByIdNumber(int idNumber) {
     return pieceMap.get(idNumber);

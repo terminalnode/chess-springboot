@@ -106,7 +106,7 @@ public class Game {
     return list;
   }
 
-  private void populatePieceMap() {
+  public void populatePieceMap() {
     for (Piece piece:pieces) {
       pieceMap.put(piece.getInternalId(), piece);
     }

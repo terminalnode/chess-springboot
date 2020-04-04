@@ -131,11 +131,12 @@ public class Game {
         }
       }
       if (takenPiece != null) {
+        pieces.remove(takenPiece);
         pieceMap.remove(takenPiece);
       }
 
       movingPiece.setX(chessMove.getDestination()[0]);
-      movingPiece.setX(chessMove.getDestination()[1]);
+      movingPiece.setY(chessMove.getDestination()[1]);
 
       this.turnsTaken++;
       whitesTurn = !whitesTurn;
@@ -160,9 +161,11 @@ public class Game {
       for (int[] possibleMove:movingPiece.getMoves(pieces)) {
         if (Arrays.equals(move.getDestination(), possibleMove)) {
           if (!checkForCheck())
+            System.out.println("Move is valid");
           return true;
         }
       }
+    System.out.println("Move is invalid");
       return false;
   }
 

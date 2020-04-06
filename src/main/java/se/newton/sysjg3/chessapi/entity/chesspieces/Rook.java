@@ -21,4 +21,9 @@ public class Rook extends Piece {
   public List<int[]> getMoves(List<Piece> pieces) {
     return getStraightMoves(pieces);
   }
+
+  @Override
+  public Piece clonePiece() {
+    return new Rook(getInternalId(), getX(), getY(), isWhite(), getGame());
+  }
 }

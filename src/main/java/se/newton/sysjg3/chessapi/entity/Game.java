@@ -106,13 +106,25 @@ public class Game {
     return list;
   }
 
+  /**
+   * Creates an identical list of pieces, but with new objects. These objects can
+   * then be moved around without actually affecting the state of the game list.
+   * @return An identical list of the game's current pieces using new piece objects.
+   */
+  public List<Piece> clonePieces() {
+    List<Piece> cloneList = new ArrayList<>();
+    for (Piece piece : clonePieces()) {
+      cloneList.add(piece.clonePiece());
+    }
+    return cloneList;
+  }
+
   public void populatePieceMap() {
     pieceMap = new HashMap<>();
     for (Piece piece:pieces) {
       pieceMap.put(piece.getInternalId(), piece);
     }
   }
-
 
   public Piece movePiece(ChessMove chessMove) {
     Piece movingPiece = getPieceByIdNumber(chessMove.getPieceNumber());
@@ -141,7 +153,7 @@ public class Game {
       }
     }
 
-    return toBeRemoved;
+    return null;
   }
 
 
@@ -191,8 +203,6 @@ public class Game {
     }
     return false;
   }
-
-
 
   public boolean checkForCheckMate() {
     int kingId = whitesTurn ? 29 : 30;

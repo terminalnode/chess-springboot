@@ -64,4 +64,9 @@ public class Pawn extends Piece {
 
     return moves;
   }
+
+  @Override
+  public Piece clonePiece() {
+    return new Pawn(getInternalId(), getX(), getY(), isWhite(), getGame());
+  }
 }

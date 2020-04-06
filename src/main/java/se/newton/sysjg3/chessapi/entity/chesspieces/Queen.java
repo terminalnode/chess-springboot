@@ -23,4 +23,9 @@ public class Queen extends Piece {
     moves.addAll(getDiagonalMoves(pieces));
     return moves;
   }
+
+  @Override
+  public Piece clonePiece() {
+    return new Queen(getInternalId(), getX(), getY(), isWhite(), getGame());
+  }
 }

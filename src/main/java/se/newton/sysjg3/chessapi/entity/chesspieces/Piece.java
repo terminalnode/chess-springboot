@@ -66,7 +66,6 @@ public abstract class Piece {
 
   //----- Abstract methods -----//
   public abstract List<int[]> getMoves(List<Piece> pieces);
-  public abstract Piece clonePiece();
 
   //----- Methods -----//
   public void move(int x, int y) {

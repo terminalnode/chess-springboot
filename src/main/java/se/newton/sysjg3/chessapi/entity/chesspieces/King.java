@@ -40,9 +40,4 @@ public class King extends Piece {
     }
     return moves;
   }
-
-  @Override
-  public Piece clonePiece() {
-    return new King(getInternalId(), getX(), getY(), isWhite(), getGame());
-  }
 }

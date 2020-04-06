@@ -1,6 +1,7 @@
 package se.newton.sysjg3.chessapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -101,6 +102,7 @@ public class Player {
     this.name = name;
   }
 
+  @JsonProperty
   public void setPassword(String password) {
     this.password = password;
   }
@@ -138,6 +140,7 @@ public class Player {
     return name;
   }
 
+  @JsonIgnore
   public String getPassword() {
     return password;
   }

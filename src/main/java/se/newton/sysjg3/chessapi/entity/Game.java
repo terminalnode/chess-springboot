@@ -174,9 +174,47 @@ public class Game {
       }
       for (int[] possibleMove:movingPiece.getMoves(pieces)) {
         if (Arrays.equals(move.getDestination(), possibleMove)) {
-          if (!checkForCheck())
+
+          Piece takenPiece = null;
+          int[] originalPosition= new int[] {movingPiece.getX(), movingPiece.getY()};
+
+          for (Piece piece:pieces) {
+            if (piece.getX() == move.getDestination()[0]) {
+              if (piece.getY() == move.getDestination()[1]) {
+                takenPiece = piece;
+                break;
+              }
+            }
+          }
+
+          if (takenPiece != null) {
+            pieces.remove(takenPiece);
+            pieceMap.remove(takenPiece);
+          }
+
+          movingPiece.setX(move.getDestination()[0]);
+          movingPiece.setY(move.getDestination()[1]);
+
+          if (!checkForCheck()) {
+
+            movingPiece.setX(originalPosition[0]);
+            movingPiece.setY(originalPosition[1]);
+
+            if (takenPiece != null) {
+              pieces.add(takenPiece);
+              pieceMap.put(takenPiece.getInternalId(), takenPiece);
+            }
+
             System.out.println("Move is valid");
-          return true;
+            return true;
+          }
+          movingPiece.setX(originalPosition[0]);
+          movingPiece.setY(originalPosition[1]);
+
+          if (takenPiece != null) {
+            pieces.add(takenPiece);
+            pieceMap.put(takenPiece.getInternalId(), takenPiece);
+          }
         }
       }
     System.out.println("Move is invalid");

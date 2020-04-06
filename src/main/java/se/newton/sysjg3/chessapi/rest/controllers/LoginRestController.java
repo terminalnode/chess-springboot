@@ -24,8 +24,14 @@ public class LoginRestController {
   }
 
   @PostMapping("/logout")
-  public String logoutPlayer(@RequestHeader(value="Token") String tokenString) {
-    tokenService.destroyToken(tokenString);
+  public String logoutPlayer(@RequestHeader(value="Token") String token) {
+    tokenService.destroyToken(token);
     return "Token deleted succesfully!";
+  }
+
+  @PostMapping("/validate")
+  public Token validateToken(@RequestHeader(value="Token") String token) {
+    return tokenService.checkTokenAndExtend(token);
+
   }
 }

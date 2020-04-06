@@ -59,29 +59,31 @@ public class TokenServiceImplementation implements TokenService {
   }
 
   @Override
-  public void extendToken(Token token) throws RuntimeException {
+  public Token extendToken(Token token) throws RuntimeException {
     Token actualToken = getTokenFromTokenString(token);
-    tokenDAO.extendToken(actualToken);
+    return tokenDAO.extendToken(actualToken);
   }
 
   @Override
   public void checkTokenExpiration(Token token) throws RuntimeException {
     Token actualToken = getTokenFromTokenString(token);
     tokenDAO.checkTokenExpiration(actualToken);
+    // Throws exception if token is invalid
   }
 
   @Override
-  public void checkTokenAndExtend(Token token) throws RuntimeException {
+  public Token checkTokenAndExtend(Token token) throws RuntimeException {
     Token actualToken = getTokenFromTokenString(token);
     checkTokenExpiration(actualToken);
-    extendToken(actualToken);
+    return extendToken(actualToken);
   }
 
   @Override
-  public void checkTokenAndExtend(String token) throws RuntimeException {
+  public Token checkTokenAndExtend(String token) throws RuntimeException {
     Token actualToken = getTokenFromTokenString(token);
     checkTokenExpiration(actualToken);
     extendToken(actualToken);
+    return actualToken;
   }
 
   @Override

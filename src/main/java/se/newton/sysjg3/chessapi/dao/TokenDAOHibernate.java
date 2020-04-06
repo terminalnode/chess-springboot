@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.entity.Token;
+import se.newton.sysjg3.chessapi.rest.exceptions.NoSuchTokenException;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -22,47 +23,11 @@ public class TokenDAOHibernate implements TokenDAO {
     this.entityManager = entityManager;
   }
 
-  //----- Helper Methods -----//
-
-  /**
-   * Checks if a Token is managed by the EntityManager, and if it's
-   * not tries to replace it with a version that is.
-   * @param token The token to be checked.
-   * @return Null or a managed version of the token.
-   */
-  public Token getManagedToken(Token token) {
-    if (token == null || token.getId() == 0) {
-      return null;
-    } else if (entityManager.contains(token)) {
-      return token;
-    }
-
-    token = entityManager.find(Token.class, token.getId());
-    return token;
-  }
-
-  /**
-   * Checks if a Player is managed by the EntityManager, and if it's
-   * not tries to replace it with a version that is.
-   * @param player The player to be checked.
-   * @return Null or a managed version of the token.
-   */
-  public Player getManagedPlayer(Player player) {
-    if (player == null || player.getId() == 0) {
-      return null;
-    } else if (entityManager.contains(player)) {
-      return player;
-    }
-
-    player = entityManager.find(Player.class, player.getId());
-    return player;
-  }
-
   //----- Implemented Methods -----//
   @Override
   @Transactional
   public Token createTokenForPlayer(Player player) {
-    player = getManagedPlayer(player);
+    player = ManagedEntityHelper.getManaged(player, entityManager);
     if (player == null) {
       return null;
     }
@@ -79,7 +44,18 @@ public class TokenDAOHibernate implements TokenDAO {
 
   @Override
   public Player getPlayerFromToken(Token token) {
-    token = getManagedToken(token);
+    token = ManagedEntityHelper.getManaged(token, entityManager);
+    if (token == null) {
+      return null;
+    }
+
+    return token.getPlayer();
+  }
+
+  @Override
+  public Player getPlayerFromTokenString(String tokenString) {
+    Token token = getTokenFromTokenString(tokenString);
+    token = ManagedEntityHelper.getManaged(token, entityManager);
     if (token == null) {
       return null;
     }
@@ -89,7 +65,7 @@ public class TokenDAOHibernate implements TokenDAO {
 
   @Override
   public boolean checkTokenExpiration(Token token) {
-    token = getManagedToken(token);
+    token = ManagedEntityHelper.getManaged(token, entityManager);
     if (token == null) {
       return false;
     }
@@ -99,8 +75,9 @@ public class TokenDAOHibernate implements TokenDAO {
   }
 
   @Override
+  @Transactional
   public Token extendToken(Token token) {
-    token = getManagedToken(token);
+    token = ManagedEntityHelper.getManaged(token, entityManager);
     if (token == null) {
       return null;
     }
@@ -115,15 +92,25 @@ public class TokenDAOHibernate implements TokenDAO {
 
   @Override
   public Token getTokenFromTokenString(Token token) {
+    try {
     return getTokenFromTokenString(token.getTokenString());
+    }
+    catch (NullPointerException e) {
+        throw new NoSuchTokenException("Unrecognised player Token");
+    }
   }
 
   @Override
   public Token getTokenFromTokenString(String tokenString) {
     Session session = entityManager.unwrap(Session.class);
+    try {
     return session.byNaturalId(Token.class)
         .using("tokenString", tokenString)
         .load();
+    }
+    catch (NullPointerException e) {
+      throw new NoSuchTokenException("Unrecognised player Token");
+    }
   }
 
   @Override
@@ -131,7 +118,6 @@ public class TokenDAOHibernate implements TokenDAO {
   public void destroyToken(Token token) {
     token = getTokenFromTokenString(token);
 
-    System.out.println(token);
     if (token != null) {
       Session session = entityManager.unwrap(Session.class);
       session.delete(token);

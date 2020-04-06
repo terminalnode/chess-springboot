@@ -1,13 +1,12 @@
 package se.newton.sysjg3.chessapi.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.entity.Token;
 import se.newton.sysjg3.chessapi.service.TokenService;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -25,7 +24,14 @@ public class LoginRestController {
   }
 
   @PostMapping("/logout")
-  public void logoutPlayer(@RequestBody Token token) {
+  public String logoutPlayer(@RequestHeader(value="Token") String token) {
     tokenService.destroyToken(token);
+    return "Token deleted succesfully!";
+  }
+
+  @PostMapping("/validate")
+  public Token validateToken(@RequestHeader(value="Token") String token) {
+    return tokenService.checkTokenAndExtend(token);
+
   }
 }

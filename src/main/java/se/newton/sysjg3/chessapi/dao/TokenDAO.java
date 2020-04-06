@@ -18,6 +18,14 @@ public interface TokenDAO {
      */
     public Player getPlayerFromToken(Token token);
 
+
+    /**
+     * Get the Player entity associated with a token.
+     * @param tokenString The token string from which to extract the Player entity.
+     * @return The token's associated Player entity.
+     */
+    public Player getPlayerFromTokenString(String tokenString);
+
     /**
      * Check if a token has expired or not.
      * @param token The token to check.

@@ -7,18 +7,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import se.newton.sysjg3.chessapi.rest.errorresponses.GenericErrorResponse;
-import se.newton.sysjg3.chessapi.rest.exceptions.NoSuchTokenException;
-import se.newton.sysjg3.chessapi.rest.exceptions.TokenInvalidException;
+import se.newton.sysjg3.chessapi.rest.exceptions.*;
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class TokenExceptionHandler extends GenericRestExceptionHandler {
+public class GameRestExceptionHandler extends GenericRestExceptionHandler {
   @ExceptionHandler
-  public ResponseEntity<GenericErrorResponse> handleException(TokenInvalidException exc) {
-    return responseEntityGenerator(exc, HttpStatus.UNAUTHORIZED);
-  }
-  @ExceptionHandler
-  public ResponseEntity<GenericErrorResponse> handleException(NoSuchTokenException exc) {
+  public ResponseEntity<GenericErrorResponse> handleException(NoSuchGameException exc) {
     return responseEntityGenerator(exc, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler
+  public ResponseEntity<GenericErrorResponse> handleException(NotPartOfThisGameException exc) {
+    return responseEntityGenerator(exc, HttpStatus.FORBIDDEN);
   }
 }

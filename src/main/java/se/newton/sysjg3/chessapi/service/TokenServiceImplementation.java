@@ -9,6 +9,7 @@ import se.newton.sysjg3.chessapi.entity.Token;
 import se.newton.sysjg3.chessapi.rest.exceptions.LoginFailedToCreateTokenException;
 import se.newton.sysjg3.chessapi.rest.exceptions.LoginIncorrectPasswordException;
 import se.newton.sysjg3.chessapi.rest.exceptions.LoginNoSuchUserException;
+import se.newton.sysjg3.chessapi.rest.exceptions.TokenInvalidException;
 
 @Service
 public class TokenServiceImplementation implements TokenService {
@@ -24,10 +25,7 @@ public class TokenServiceImplementation implements TokenService {
 
   //----- Implemented Methods -----//
   @Override
-  public Token createTokenForPlayer(Player player) throws
-      LoginFailedToCreateTokenException,
-      LoginIncorrectPasswordException,
-      LoginNoSuchUserException {
+  public Token createTokenForPlayer(Player player) throws RuntimeException {
     String name = player.getName();
     String password = player.getPassword();
 
@@ -48,32 +46,75 @@ public class TokenServiceImplementation implements TokenService {
   }
 
   @Override
-  public Player getPlayerFromToken(Token token) {
-    return null;
+  public Player getPlayerFromToken(Token token) throws RuntimeException {
+    checkTokenExpiration(token);
+    return tokenDAO.getPlayerFromToken(token);
   }
 
   @Override
-  public void extendToken(Token token) {
-
+  public Player getPlayerFromToken(String token) throws RuntimeException {
+    Token actualToken = tokenDAO.getTokenFromTokenString(token);
+    checkTokenExpiration(actualToken);
+    return tokenDAO.getPlayerFromToken(actualToken);
   }
 
   @Override
-  public boolean checkTokenExpiration(Token token) {
-    return false;
+  public Token extendToken(Token token) throws RuntimeException {
+    Token actualToken = getTokenFromTokenString(token);
+    return tokenDAO.extendToken(actualToken);
   }
 
   @Override
-  public Token getTokenFromTokenString(String tokenString) {
-    return null;
+  public void checkTokenExpiration(Token token) throws RuntimeException {
+    Token actualToken = getTokenFromTokenString(token);
+    tokenDAO.checkTokenExpiration(actualToken);
+    // Throws exception if token is invalid
   }
 
   @Override
-  public Token getTokenFromTokenString(Token token) {
-    return null;
+  public Token checkTokenAndExtend(Token token) throws RuntimeException {
+    Token actualToken = getTokenFromTokenString(token);
+    checkTokenExpiration(actualToken);
+    return extendToken(actualToken);
   }
 
   @Override
-  public void destroyToken(Token token) {
-    tokenDAO.destroyToken(token);
+  public Token checkTokenAndExtend(String token) throws RuntimeException {
+    Token actualToken = getTokenFromTokenString(token);
+    checkTokenExpiration(actualToken);
+    extendToken(actualToken);
+    return actualToken;
+  }
+
+  @Override
+  public Token getTokenFromTokenString(String token) throws RuntimeException {
+    Token actualToken = tokenDAO.getTokenFromTokenString(token);
+    if (actualToken == null) {
+      throw new TokenInvalidException("The provided token is invalid");
+    }
+
+    return actualToken;
+  }
+
+  @Override
+  public Token getTokenFromTokenString(Token token) throws RuntimeException {
+    Token actualToken = tokenDAO.getTokenFromTokenString(token);
+    if (actualToken == null) {
+      throw new TokenInvalidException("The provided token is invalid");
+    }
+
+    return tokenDAO.getTokenFromTokenString(actualToken);
+  }
+
+  @Override
+  public void destroyToken(Token token) throws RuntimeException {
+    Token actualToken = getTokenFromTokenString(token);
+    tokenDAO.destroyToken(actualToken);
+  }
+
+  @Override
+  public void destroyToken(String token) throws RuntimeException {
+    Token actualToken = getTokenFromTokenString(token);
+    tokenDAO.destroyToken(actualToken);
   }
 }

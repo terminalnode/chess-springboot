@@ -1,6 +1,7 @@
 package se.newton.sysjg3.chessapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ public class Player {
   @Id
   @Column(name = "id")
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private int id;
+  private long id;
 
   @NaturalId
   @Column(name = "name", unique = true)
@@ -40,9 +41,17 @@ public class Player {
   private List<Challenge> pendingChallenges;
 
   @JsonIgnore
-  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "blackPlayer", fetch = FetchType.LAZY)
+  private List<Game> gamesAsBlack;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "whitePlayer", fetch = FetchType.LAZY)
+  private List<Game> gamesAsWhite;
+
+  @JsonIgnore
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(
-      name = "friends",
+      name = "friend",
       joinColumns = @JoinColumn(name="player_id"),
       inverseJoinColumns = @JoinColumn(name="friend_id")
   )
@@ -75,8 +84,17 @@ public class Player {
     token.setPlayer(this);
   }
 
+  @Override
+  public String toString() {
+    return String.format(
+        "<Player id=%s, name=%s>",
+        id,
+        name
+    );
+  }
+
   //----- Setters -----//
-  public void setId(int id) {
+  public void setId(long id) {
     this.id = id;
   }
 
@@ -84,6 +102,7 @@ public class Player {
     this.name = name;
   }
 
+  @JsonProperty
   public void setPassword(String password) {
     this.password = password;
   }
@@ -104,8 +123,16 @@ public class Player {
     this.pendingChallenges = pendingChallenges;
   }
 
+  public void setGamesAsBlack(List<Game> gamesAsBlack) {
+    this.gamesAsBlack = gamesAsBlack;
+  }
+
+  public void setGamesAsWhite(List<Game> gamesAsWhite) {
+    this.gamesAsWhite = gamesAsWhite;
+  }
+
   //----- Getters -----//
-  public int getId() {
+  public long getId() {
     return id;
   }
 
@@ -113,6 +140,7 @@ public class Player {
     return name;
   }
 
+  @JsonIgnore
   public String getPassword() {
     return password;
   }
@@ -131,5 +159,26 @@ public class Player {
 
   public List<Challenge> getPendingChallenges() {
     return pendingChallenges;
+  }
+
+  public List<Game> getGamesAsBlack() {
+    return gamesAsBlack;
+  }
+
+  public List<Game> getGamesAsWhite() {
+    return gamesAsWhite;
+  }
+
+  @JsonIgnore
+  public List<Game> getGames() {
+    List<Game> gamesAsBlack = getGamesAsBlack();
+    List<Game> gamesAsWhite = getGamesAsWhite();
+    if (gamesAsWhite == null) {
+      return gamesAsBlack;
+    } else if (gamesAsBlack == null) {
+      return gamesAsWhite;
+    }
+    gamesAsBlack.addAll(gamesAsWhite);
+    return gamesAsBlack;
   }
 }

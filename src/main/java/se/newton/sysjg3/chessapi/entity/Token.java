@@ -6,10 +6,11 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 
 @Entity
-@Table(name = "tokens")
+@Table(name = "token")
 public class Token {
   @Id
   @Column(name = "id")
@@ -34,11 +35,19 @@ public class Token {
   }
 
   public Token(Player player) {
-    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    Date currentDate = new Date();
-    String currentDateString = dateFormat.format(currentDate);
+    // Token is a combination of the player name and the current time
+    // in milliseconds encoded in Base64.
+    byte[] toBeToken = String
+      .format(
+        "%s %s",
+        player.getName(),
+        System.currentTimeMillis())
+      .getBytes();
 
-    this.tokenString = Integer.toString((player.getName() + currentDateString).hashCode());
+    this.tokenString = Base64
+        .getEncoder()
+        .encodeToString(toBeToken);
+
     updateCreatedAt();
   }
 

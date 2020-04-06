@@ -11,6 +11,7 @@ import se.newton.sysjg3.chessapi.rest.exceptions.NoSuchChallengeException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -18,12 +19,14 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
   private EntityManager entityManager;
   private long expirationTime;
 
+
   @Autowired
   public ChallengeDAOHibernate(EntityManager entityManager) {
     this.entityManager = entityManager;
     this.expirationTime = 24 * 3600 * 1000;
   }
 
+  @Transactional
   @Override
   public void create(Challenge challenge) {
     challenge.setCreatedAt(System.currentTimeMillis());
@@ -31,6 +34,7 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
     session.save(challenge);
   }
 
+  @Transactional
   @Override
   public void delete(Challenge challenge) {
     Session session = entityManager.unwrap(Session.class);
@@ -47,6 +51,7 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
         .load();
     }
     catch (Exception e) {
+      System.out.println(">>>THE PROGRAM GOES HERE!");
         e.printStackTrace();
     }
     return null;

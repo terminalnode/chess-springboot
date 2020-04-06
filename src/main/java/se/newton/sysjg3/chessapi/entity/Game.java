@@ -71,37 +71,37 @@ public class Game {
   //----- Methods -----//
   private List<Piece> generatePieces() {
     List<Piece> list = new ArrayList<>();
-    int id = 1;
+    int id = 0;
 
     // Add pawns
     for (int x = 0; x < 8; x++) {
-      list.add(new Pawn(++id, x, 1, WHITE, this));
-      list.add(new Pawn(++id, x, 6, BLACK, this));
+      list.add(new Pawn(++id, x, 1, WHITE, this)); // 1,3,5,7,9,11,13,15
+      list.add(new Pawn(++id, x, 6, BLACK, this)); // 2,4,6,8,10,12,14,16
     }
 
     // Add rooks
-    list.add(new Rook(++id, 0, 0, WHITE, this));
-    list.add(new Rook(++id, 7, 0, WHITE, this));
-    list.add(new Rook(++id, 0, 7, BLACK, this));
-    list.add(new Rook(++id, 7, 7, BLACK, this));
+    list.add(new Rook(++id, 0, 0, WHITE, this)); // 17
+    list.add(new Rook(++id, 7, 0, WHITE, this)); // 18
+    list.add(new Rook(++id, 0, 7, BLACK, this)); // 19
+    list.add(new Rook(++id, 7, 7, BLACK, this)); // 20
 
     // Add knights
-    list.add(new Knight(++id, 1, 0, WHITE, this));
-    list.add(new Knight(++id, 6, 0, WHITE, this));
-    list.add(new Knight(++id, 1, 7, BLACK, this));
-    list.add(new Knight(++id, 6, 7, BLACK, this));
+    list.add(new Knight(++id, 1, 0, WHITE, this)); //21
+    list.add(new Knight(++id, 6, 0, WHITE, this)); //22
+    list.add(new Knight(++id, 1, 7, BLACK, this)); //23
+    list.add(new Knight(++id, 6, 7, BLACK, this)); //24
 
     // Add bishops
-    list.add(new Bishop(++id, 2, 0, WHITE, this));
-    list.add(new Bishop(++id, 5, 0, WHITE, this));
-    list.add(new Bishop(++id, 2, 7, BLACK, this));
-    list.add(new Bishop(++id, 5, 7, BLACK, this));
+    list.add(new Bishop(++id, 2, 0, WHITE, this)); //25
+    list.add(new Bishop(++id, 5, 0, WHITE, this)); //26
+    list.add(new Bishop(++id, 2, 7, BLACK, this)); //27
+    list.add(new Bishop(++id, 5, 7, BLACK, this)); //28
 
     // Add kings and queens
-    list.add(new King(++id, 4, 0, WHITE, this));
-    list.add(new King(++id, 4, 7, BLACK, this));
-    list.add(new Queen(++id, 3, 0, WHITE, this));
-    list.add(new Queen(++id, 3, 7, BLACK, this));
+    list.add(new King(++id, 4, 0, WHITE, this)); //29
+    list.add(new King(++id, 4, 7, BLACK, this)); //30
+    list.add(new Queen(++id, 3, 0, WHITE, this)); //31
+    list.add(new Queen(++id, 3, 7, BLACK, this)); //32
 
     return list;
   }
@@ -177,6 +177,8 @@ public class Game {
 
   public boolean checkForCheck() {
     int kingId = whitesTurn ? 29 : 30;
+
+    populatePieceMap();
     int[] kingPosition = new int[] {pieceMap.get(kingId).getX(), pieceMap.get(kingId).getY()};
 
     List<Piece> opponentsPieces = getOneColourPieces(!whitesTurn);
@@ -198,11 +200,10 @@ public class Game {
     List<Piece> yourPieces = getOneColourPieces(whitesTurn);
 
     for (Piece yourPiece : yourPieces) {
-      for (int[] position : yourPiece.getMoves(new ArrayList<>(pieceMap.values()))) {
+      for (int[] position : yourPiece.getMoves(new ArrayList<>(pieces))) {
         Piece takenPiece = null;
         ChessMove potentialMove = new ChessMove(yourPiece.getInternalId(), position);
-        Piece originalPiece = pieceMap.get(potentialMove.getPieceNumber());
-        int[] originalPosition= new int[] {originalPiece.getX(), originalPiece.getY()};
+        int[] originalPosition= new int[] {yourPiece.getX(), yourPiece.getY()};
 
         for (Piece piece:pieceMap.values()) {
           if (piece.getX() == potentialMove.getDestination()[0]) {
@@ -217,28 +218,29 @@ public class Game {
           pieceMap.remove(takenPiece);
         }
 
-        originalPiece.setX(potentialMove.getDestination()[0]);
-        originalPiece.setX(potentialMove.getDestination()[1]);
+        yourPiece.setX(potentialMove.getDestination()[0]);
+        yourPiece.setY(potentialMove.getDestination()[1]);
 
         if (!checkForCheck()) {
           if (takenPiece != null) {
             pieceMap.put(takenPiece.getInternalId(),takenPiece);
           }
-          originalPiece.setX(originalPosition[0]);
-          originalPiece.setY(originalPosition[1]);
+          yourPiece.setX(originalPosition[0]);
+          yourPiece.setY(originalPosition[1]);
           return false;
         }
 
         if (takenPiece != null) {
           pieceMap.put(takenPiece.getInternalId(), takenPiece);
         }
-
-        originalPiece.setX(originalPosition[0]);
-        originalPiece.setY(originalPosition[1]);
+        yourPiece.setX(originalPosition[0]);
+        yourPiece.setY(originalPosition[1]);
       }
 
     }
+    System.out.println("Chekmate: The game is over!");
     return true;
+
   }
 
   public List<Piece> getOneColourPieces(boolean whitePieces) {

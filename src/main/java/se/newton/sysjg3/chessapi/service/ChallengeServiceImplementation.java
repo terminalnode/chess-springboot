@@ -34,7 +34,6 @@ public class ChallengeServiceImplementation implements ChallengeService {
   }
 
   @Override
-  @Transactional
   public Challenge create(Player challenged, String token) {
     Player challenger = tokenService.getPlayerFromToken(token);
     challenged = playerService.getManagedPlayer(challenged);
@@ -44,16 +43,19 @@ public class ChallengeServiceImplementation implements ChallengeService {
     Challenge oldChallenge = challengeDAO.getChallengeByParticipants(challenger, challenged);
 
     if (oldChallenge == null) {
+      System.out.println("TEST 1");
       // No previous challenge exists, create this one.
       challengeDAO.create(challenge);
 
     } else if (currentTime - oldChallenge.getCreatedAt() > expirationTime) {
+      System.out.println("TEST 2");
       // Challenge has expired, delete it and create a new one.
       challengeDAO.delete(oldChallenge);
       challenge.setCreatedAt(currentTime);
       challengeDAO.create(challenge);
 
     } else {
+      System.out.println("TEST 3");
       // Challenge already exists, no new one will be created.
       throw new ChallengeAlreadyExistsException(
           String.format(

@@ -21,4 +21,9 @@ public class GameRestExceptionHandler extends GenericRestExceptionHandler {
   public ResponseEntity<GenericErrorResponse> handleException(NotPartOfThisGameException exc) {
     return responseEntityGenerator(exc, HttpStatus.FORBIDDEN);
   }
+
+  @ExceptionHandler
+  public ResponseEntity<GenericErrorResponse> handleException(IllegalMoveException exc) {
+    return responseEntityGenerator(exc, HttpStatus.FORBIDDEN);
+  }
 }

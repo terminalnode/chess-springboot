@@ -106,13 +106,25 @@ public class Game {
     return list;
   }
 
+  /**
+   * Creates an identical list of pieces, but with new objects. These objects can
+   * then be moved around without actually affecting the state of the game list.
+   * @return An identical list of the game's current pieces using new piece objects.
+   */
+  public List<Piece> clonePieces() {
+    List<Piece> cloneList = new ArrayList<>();
+    for (Piece piece : clonePieces()) {
+      cloneList.add(piece.clonePiece());
+    }
+    return cloneList;
+  }
+
   public void populatePieceMap() {
     pieceMap = new HashMap<>();
     for (Piece piece:pieces) {
       pieceMap.put(piece.getInternalId(), piece);
     }
   }
-
 
   public Piece movePiece(ChessMove chessMove) {
     Piece movingPiece = getPieceByIdNumber(chessMove.getPieceNumber());
@@ -141,7 +153,7 @@ public class Game {
       }
     }
 
-    return toBeRemoved;
+    return null;
   }
 
 
@@ -162,9 +174,47 @@ public class Game {
       }
       for (int[] possibleMove:movingPiece.getMoves(pieces)) {
         if (Arrays.equals(move.getDestination(), possibleMove)) {
-          if (!checkForCheck())
+
+          Piece takenPiece = null;
+          int[] originalPosition= new int[] {movingPiece.getX(), movingPiece.getY()};
+
+          for (Piece piece:pieces) {
+            if (piece.getX() == move.getDestination()[0]) {
+              if (piece.getY() == move.getDestination()[1]) {
+                takenPiece = piece;
+                break;
+              }
+            }
+          }
+
+          if (takenPiece != null) {
+            pieces.remove(takenPiece);
+            pieceMap.remove(takenPiece);
+          }
+
+          movingPiece.setX(move.getDestination()[0]);
+          movingPiece.setY(move.getDestination()[1]);
+
+          if (!checkForCheck()) {
+
+            movingPiece.setX(originalPosition[0]);
+            movingPiece.setY(originalPosition[1]);
+
+            if (takenPiece != null) {
+              pieces.add(takenPiece);
+              pieceMap.put(takenPiece.getInternalId(), takenPiece);
+            }
+
             System.out.println("Move is valid");
-          return true;
+            return true;
+          }
+          movingPiece.setX(originalPosition[0]);
+          movingPiece.setY(originalPosition[1]);
+
+          if (takenPiece != null) {
+            pieces.add(takenPiece);
+            pieceMap.put(takenPiece.getInternalId(), takenPiece);
+          }
         }
       }
     System.out.println("Move is invalid");
@@ -191,8 +241,6 @@ public class Game {
     }
     return false;
   }
-
-
 
   public boolean checkForCheckMate() {
     int kingId = whitesTurn ? 29 : 30;

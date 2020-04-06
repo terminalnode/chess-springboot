@@ -21,9 +21,4 @@ public class Bishop extends Piece {
   public List<int[]> getMoves(List<Piece> pieces) {
     return getDiagonalMoves(pieces);
   }
-
-  @Override
-  public Piece clonePiece() {
-    return new Bishop(getInternalId(), getX(), getY(), isWhite(), getGame());
-  }
 }

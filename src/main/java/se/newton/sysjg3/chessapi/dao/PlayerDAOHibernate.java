@@ -1,6 +1,5 @@
 package se.newton.sysjg3.chessapi.dao;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;

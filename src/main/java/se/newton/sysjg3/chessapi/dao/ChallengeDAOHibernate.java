@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import se.newton.sysjg3.chessapi.entity.Challenge;
 import se.newton.sysjg3.chessapi.entity.Player;
-import se.newton.sysjg3.chessapi.entity.Token;
-import se.newton.sysjg3.chessapi.rest.exceptions.NoSuchChallengeException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -63,7 +61,7 @@ public class ChallengeDAOHibernate implements ChallengeDAO {
         Session session = entityManager.unwrap(Session.class);
         return session.getReference(Challenge.class, challengeId);
       } catch (EntityNotFoundException e) {
-        throw new NoSuchChallengeException("That challenge does not exist.");
+        return null;
       }
     }
 

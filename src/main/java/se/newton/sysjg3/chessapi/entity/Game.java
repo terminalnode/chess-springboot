@@ -119,6 +119,12 @@ public class Game {
     return cloneList;
   }
 
+  /**
+   * This method populates a hashmap with all pieces in the game keyed to their internalID.
+   * This field speeds up many of the methods in the class, such as move validation and
+   * checking for check.
+   *
+   */
   public void populatePieceMap() {
     pieceMap = new HashMap<>();
     for (Piece piece:pieces) {

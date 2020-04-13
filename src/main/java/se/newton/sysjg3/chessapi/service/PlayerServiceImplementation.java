@@ -7,7 +7,6 @@ import se.newton.sysjg3.chessapi.dao.PlayerDAO;
 import se.newton.sysjg3.chessapi.entity.Player;
 import se.newton.sysjg3.chessapi.rest.exceptions.AddFriendException;
 import se.newton.sysjg3.chessapi.rest.exceptions.AlreadyFriendException;
-import se.newton.sysjg3.chessapi.rest.exceptions.AndroidChessException;
 import se.newton.sysjg3.chessapi.rest.exceptions.CantAddSelfAsFriendException;
 
 import java.util.List;
@@ -87,7 +86,7 @@ public class PlayerServiceImplementation implements PlayerService {
   }
 
   @Override
-  public List<Player> searchFriendByString(String searchString, String tokenString) {
+  public List<Player> searchFriendByString(String searchString, String tokenString) throws RuntimeException {
 
     Player searchingPlayer = tokenService.getPlayerFromToken(tokenString);
 
@@ -107,7 +106,7 @@ public class PlayerServiceImplementation implements PlayerService {
   }
 
   @Override
-  public Player getManagedPlayer(Player player) {
+  public Player getManagedPlayer(Player player) throws RuntimeException {
     return playerDAO.get(player);
   }
 }

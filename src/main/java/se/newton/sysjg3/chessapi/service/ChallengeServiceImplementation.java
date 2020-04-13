@@ -34,7 +34,7 @@ public class ChallengeServiceImplementation implements ChallengeService {
   }
 
   @Override
-  public Challenge create(Player challenged, String token) {
+  public Challenge create(Player challenged, String token) throws RuntimeException {
     Player challenger = tokenService.getPlayerFromToken(token);
     challenged = playerService.getManagedPlayer(challenged);
     long currentTime = System.currentTimeMillis();
@@ -69,14 +69,14 @@ public class ChallengeServiceImplementation implements ChallengeService {
   }
 
   @Override
-  public List<Challenge> getChallengesByChallenger(String token) {
+  public List<Challenge> getChallengesByChallenger(String token) throws RuntimeException {
     tokenService.checkTokenAndExtend(token);
     Player challenger = tokenService.getPlayerFromToken(token);
     return challengeDAO.getChallengesByChallenger(challenger);
   }
 
   @Override
-  public List<Challenge> getChallengesByChallenged(String token) {
+  public List<Challenge> getChallengesByChallenged(String token) throws RuntimeException {
     tokenService.checkTokenAndExtend(token);
     Player challenged = tokenService.getPlayerFromToken(token);
     return challengeDAO.getChallengesByChallenged(challenged);
@@ -100,17 +100,19 @@ public class ChallengeServiceImplementation implements ChallengeService {
 
   @Override
   @Transactional
-  public String declineChallenge(long challengeId, String token) {
+  public String declineChallenge(long challengeId, String token) throws RuntimeException {
     tokenService.checkTokenAndExtend(token);
     Challenge challenge = challengeDAO.getChallengeById(challengeId);
     Player challenged = tokenService.getPlayerFromToken(token);
 
     if (challenge == null) {
       System.out.println("CHALLENGE IS NULL");
+      return null;
     }
 
     if (challenged == null) {
       System.out.println("CHALLENGED IS NULL");
+      return null;
     }
 
     if (challenged.equals(challenge.getChallenged())) {

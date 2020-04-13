@@ -27,7 +27,7 @@ public class GameServiceImplementation implements GameService {
 
     @Override
     @Transactional
-    public Game createNewGame(Challenge challenge) {
+    public Game createNewGame(Challenge challenge) throws RuntimeException {
         Game game;
 
         if (Math.random() > 0.5) {
@@ -42,12 +42,12 @@ public class GameServiceImplementation implements GameService {
 
   @Override
   @Transactional
-  public Game makeMove(ChessMove move, long gameId, String token)  {
+  public Game makeMove(ChessMove move, long gameId, String token) throws RuntimeException {
     return makeMove(move, gameDAO.getGameFromId(gameId), token);
   }
 
     @Override
-    public Game makeMove(ChessMove move, Game game, String tokenString)  {
+    public Game makeMove(ChessMove move, Game game, String tokenString) throws RuntimeException  {
         Player movingPlayer = tokenService.getPlayerFromToken(tokenString);
 
         if (movingPlayer != game.getCurrentPlayer()) {
@@ -64,7 +64,7 @@ public class GameServiceImplementation implements GameService {
 
     @Override
     @Transactional
-    public List<Game> getCurrentPlayerGamesFromToken(String tokenString) {
+    public List<Game> getCurrentPlayerGamesFromToken(String tokenString) throws RuntimeException {
         Player currentPlayer = tokenService.getPlayerFromToken(tokenString);
         List<Game> gameList = gameDAO.getAllGamesForPlayer(currentPlayer);
 
@@ -75,7 +75,7 @@ public class GameServiceImplementation implements GameService {
     }
 
     @Override
-    public Game getCurrentPlayerGameFromGameId(String tokenString, long gameId) {
+    public Game getCurrentPlayerGameFromGameId(String tokenString, long gameId) throws RuntimeException {
         Player currentPlayer = null;
 
         try {
@@ -99,7 +99,7 @@ public class GameServiceImplementation implements GameService {
         return game;
     }
 
-    private void setColorMessage(Player player, Game game) {
+    private void setColorMessage(Player player, Game game) throws RuntimeException {
         if (player == game.getBlackPlayer()) {
             game.setGettingPlayerWhite(false);
         }

@@ -17,6 +17,7 @@ public class TokenExceptionHandler extends GenericRestExceptionHandler {
   public ResponseEntity<GenericErrorResponse> handleException(TokenInvalidException exc) {
     return responseEntityGenerator(exc, HttpStatus.UNAUTHORIZED);
   }
+
   @ExceptionHandler
   public ResponseEntity<GenericErrorResponse> handleException(NoSuchTokenException exc) {
     return responseEntityGenerator(exc, HttpStatus.NOT_FOUND);

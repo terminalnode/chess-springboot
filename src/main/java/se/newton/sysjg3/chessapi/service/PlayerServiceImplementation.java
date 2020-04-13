@@ -24,7 +24,6 @@ public class PlayerServiceImplementation implements PlayerService {
   }
 
   @Override
-  @Transactional
   public void create(Player player) throws RuntimeException {
     playerDAO.create(player);
   }

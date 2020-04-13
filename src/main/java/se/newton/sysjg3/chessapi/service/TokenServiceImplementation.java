@@ -89,6 +89,7 @@ public class TokenServiceImplementation implements TokenService {
   @Override
   public Token getTokenFromTokenString(String token) throws RuntimeException {
     Token actualToken = tokenDAO.getTokenFromTokenString(token);
+
     if (actualToken == null) {
       throw new TokenInvalidException("The provided token is invalid");
     }
@@ -99,11 +100,12 @@ public class TokenServiceImplementation implements TokenService {
   @Override
   public Token getTokenFromTokenString(Token token) throws RuntimeException {
     Token actualToken = tokenDAO.getTokenFromTokenString(token);
+
     if (actualToken == null) {
       throw new TokenInvalidException("The provided token is invalid");
     }
 
-    return tokenDAO.getTokenFromTokenString(actualToken);
+    return actualToken;
   }
 
   @Override
